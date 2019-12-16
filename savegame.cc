@@ -797,13 +797,6 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < 4; ++i) {
-		switch (i) {
-			case 0: continue;
-			case 1: continue;
-			case 2: continue;
-			case 3: break; 
-		}
-
 		printf("%s, tax_rate: %2d\n", nation_list[i], nation[i].tax_rate);
 
 		assert(nation[i].recruit_count <= 180); //does not go above 180
