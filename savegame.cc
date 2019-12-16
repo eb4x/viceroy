@@ -479,7 +479,7 @@ void print_player(const struct savegame::player *player, int just_this_one)
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < 4; ++i) {
-		printf("%s: %23s / %23s : ", nation_list[i], player[i].name, player[i].country);
+		printf("%-11s: %23s / %23s : ", nation_list[i], player[i].name, player[i].country);
 		switch (player[i].control) {
 			case savegame::player::PLAYER: printf("Player "); break;
 			case savegame::player::AI:     printf("AI     "); break;
@@ -766,55 +766,36 @@ void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, in
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < unit_count; ++i) {
-		printf("[%3d] (%3d, %3d): ", i, unit[i].x, unit[i].y);
-		
-		switch (unit[i].mode) {
-			case savegame::unit::COLONIST:            printf("Colonist            "); break;
-			case savegame::unit::SOLDIER:             printf("Soldier             "); break;
-			case savegame::unit::PIONEER:             printf("Pioneer             "); break;
-			case savegame::unit::MISSIONARY:          printf("Missionary          "); break;
-			case savegame::unit::DRAGOON:             printf("Dragoon             "); break;
-			case savegame::unit::SCOUT:               printf("Scout               "); break;
-			case savegame::unit::TORY_REGULAR:        printf("Tory regular        "); break;
-			case savegame::unit::CONTINENTAL_CAVALRY: printf("Continental cavalry "); break;
-			case savegame::unit::TORY_CAVALRY:        printf("Tory cavalry        "); break;
-			case savegame::unit::CONTINENTAL_ARMY:    printf("Continental army    "); break;
-			case savegame::unit::TREASURE:            printf("Treasure            "); break;
-			case savegame::unit::ARTILLERY:           printf("Artillery           "); break;
-			case savegame::unit::WAGON_TRAIN:         printf("Wagon train         "); break;
-			case savegame::unit::CARAVEL:             printf("Caravel             "); break;
-			case savegame::unit::MERCHANTMAN:         printf("Merchantman         "); break;
-			case savegame::unit::GALEON:              printf("Galeon              "); break;
-			case savegame::unit::PRIVATEER:           printf("Privateer           "); break;
-			case savegame::unit::FRIGATE:             printf("Frigate             "); break;
-			case savegame::unit::MAN_O_WAR:           printf("Man-O-War           "); break;
-			case savegame::unit::INDIAN:              printf("Indian              "); break;
-			case savegame::unit::MOUNTED_BRAVE:       printf("Mounted brave       "); break;
-			default:                                  printf("N/A (%02x)            ", unit[i].mode);
-		}
+		printf("[%3d] (%3d, %3d): %-19s ", i, unit[i].x, unit[i].y, unit_type_list[unit[i].type]);
 
-		printf("%s ", nation_list[unit[i].owner] );
+		printf("%-11s ", nation_list[unit[i].owner] );
 		printf("m:%02x ", unit[i].moves);
 
 		printf("t:%3d ", unit[i].tools);
 		printf("tw:%d ", unit[i].turns_worked);
 
-		switch (unit[i].mode) {
-			case savegame::unit::COLONIST:
-			case savegame::unit::SOLDIER:
-			case savegame::unit::PIONEER:
-			case savegame::unit::MISSIONARY:
-			case savegame::unit::DRAGOON:
-			case savegame::unit::SCOUT:
-			case savegame::unit::CONTINENTAL_CAVALRY:
-			case savegame::unit::CONTINENTAL_ARMY:
-				printf("%s",   profession_list[unit[i].profession]);
+		switch (unit[i].type) {
+			case  0: //savegame::unit::COLONIST:
+			case  1: //savegame::unit::SOLDIER:
+			case  2: //savegame::unit::PIONEER:
+			case  3: //savegame::unit::MISSIONARY:
+			case  4: //savegame::unit::DRAGOON:
+			case  5: //savegame::unit::SCOUT:
+			case  7: //savegame::unit::CONTINENTAL_CAVALRY:
+			case  9: //savegame::unit::CONTINENTAL_ARMY:
+			case 19: //savegame::unit::BRAVE:
+				printf("%-22s", profession_list[unit[i].profession]);
 				break;
-			case savegame::unit::TREASURE:
+			case 10: //savegame::unit::TREASURE:
 				printf("%3d00 gold            ", unit[i].profession);
 				break;
+			case 13: //savegame::unit::CARAVEL:
+			case 14: //savegame::uniT::MERCHANTMAN:
+				printf("%-22s", unit_type_list[unit[i].type]);
+				assert(0 == unit[i].profession);
+				break;
 			default:
-				printf("N/A (%04x)            ", unit[i].profession);
+				printf("TYPE: %2d PROF: %2d     ", unit[i].type, unit[i].profession);
 		}
 
 		printf("%2x %02x %02x %02x %02x "
@@ -858,7 +839,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < 4; ++i) {
-		printf("%s, tax_rate: %2d\n", nation_list[i], nation[i].tax_rate);
+		printf("%-11s, tax_rate: %2d\n", nation_list[i], nation[i].tax_rate);
 
 		assert(nation[i].recruit_count <= 180); //does not go above 180
 
@@ -959,7 +940,7 @@ void print_tribe(const struct savegame::tribe  *tribe,  uint16_t tribe_count, in
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < tribe_count; ++i) {
-		printf("[%3d] (%3d, %3d): %2d %s : ", i, tribe[i].x, tribe[i].y, tribe[i].population, nation_list[tribe[i].nation]);
+		printf("[%3d] (%3d, %3d): %2d %-11s : ", i, tribe[i].x, tribe[i].y, tribe[i].population, nation_list[tribe[i].nation]);
 		printf("state: artillery(%d) learned(%d) capital(%d) scouted(%d) %d %d %d %d, ",
 			tribe[i].state.artillery, tribe[i].state.learned, tribe[i].state.capital, tribe[i].state.scouted,
 			tribe[i].state.unk5, tribe[i].state.unk6, tribe[i].state.unk7, tribe[i].state.unk8);

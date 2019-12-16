@@ -1,50 +1,76 @@
 #include <stdint.h>
 
+static const char *unit_type_list[] {
+	/*  0 */ "Colonist",
+	/*  1 */ "Soldier",
+	/*  2 */ "Pioneer",
+	/*  3 */ "Missionary",
+	/*  4 */ "Dragoon",
+	/*  5 */ "Scout",
+	/*  6 */ "Tory regular",
+	/*  7 */ "Continental cavalry",
+	/*  8 */ "Tory cavalry",
+	/*  9 */ "Continental army",
+	/* 10 */ "Treasure",
+	/* 11 */ "Artillery",
+	/* 12 */ "Wagon train",
+	/* 13 */ "Caravel",
+	/* 14 */ "Merchantman",
+	/* 15 */ "Galeon",
+	/* 16 */ "Privateer",
+	/* 17 */ "Frigate",
+	/* 18 */ "Man-O-War",
+	/* 19 */ "Brave",
+	/* 20 */ "Armed brave",
+	/* 21 */ "Mounted brave",
+	/* 22 */ "Mounted warrior",
+};
+
 static const char *profession_list[] = {
-	"Expert farmer         ", //0x00
-	"Master sugar planter  ", //0x01
-	"Master tobacco planter", //0x02
-	"Master cotton planter ", //0x03
-	"Expert fur trapper    ", //0x04
-	"Expert lumberjack     ", //0x05
-	"Expert ore miner      ", //0x06
-	"Expert silver miner   ", //0x07
-	"Expert fisherman      ", //0x08
-	"Master distiller      ", //0x09
-	"Master tobacconist    ", //0x0a
-	"Master weaver         ", //0x0b
-	"Master fur trader     ", //0x0c
-	"Master carpenter      ", //0x0d
-	"Master blacksmith     ", //0x0e
-	"Master gunsmith       ", //0x0f
-	"Firebrand preacher    ", //0x10
-	"Elder statesman       ", //0x11
-	"prof_unk12            ", //0x12
-	"prof_unk13            ", //0x13
-	"Hardy pioneer         ", //0x14
-	"Veteran soldier       ", //0x15
-	"Seasoned scout        ", //0x16
-	"prof_unk17            ", //0x17
-	"Jesuit missionary     ", //0x18
-	"Indentured servant    ", //0x19
-	"Petty criminal        ", //0x1a
-	"prof_unk1b            ", //0x1b
-	"Free colonist         ", //0x1c
+	/*  0 */ "Expert farmer",
+	/*  1 */ "Master sugar planter",
+	/*  2 */ "Master tobacco planter",
+	/*  3 */ "Master cotton planter",
+	/*  4 */ "Expert fur trapper",
+	/*  5 */ "Expert lumberjack",
+	/*  6 */ "Expert ore miner",
+	/*  7 */ "Expert silver miner",
+	/*  8 */ "Expert fisherman",
+	/*  9 */ "Master distiller",
+	/* 10 */ "Master tobacconist",
+	/* 11 */ "Master weaver",
+	/* 12 */ "Master fur trader",
+	/* 13 */ "Master carpenter",
+	/* 14 */ "Master blacksmith",
+	/* 15 */ "Master gunsmith",
+	/* 16 */ "Firebrand preacher",
+	/* 17 */ "Elder statesman",
+	/* 18 */ "*(Student)",
+	/* 19 */ "*(Free colonist)",
+	/* 20 */ "Hardy pioneer",
+	/* 21 */ "Veteran soldier",
+	/* 22 */ "Seasoned scout",
+	/* 23 */ "Veteran dragoon",
+	/* 24 */ "Jesuit missionary",
+	/* 25 */ "Indentured servant",
+	/* 26 */ "Petty criminal",
+	/* 27 */ "Indian convert",
+	/* 28 */ "Free colonist ???",
 };
 
 static const char *nation_list[] = {
-	"England    ", //0x00
-	"France     ", //0x01
-	"Spain      ", //0x02
-	"Netherlands", //0x03
-	"Inca       ", //0x04
-	"Aztec      ", //0x05
-	"Awarak     ", //0x06
-	"Iroqui     ", //0x07
-	"Cherokee   ", //0x08
-	"Apache     ", //0x09
-	"Sioux      ", //0x0a
-	"Tupi       ", //0x0b
+	/*  0 */ "England",
+	/*  1 */ "France",
+	/*  2 */ "Spain",
+	/*  3 */ "Netherlands",
+	/*  4 */ "Inca",
+	/*  5 */ "Aztec",
+	/*  6 */ "Awarak",
+	/*  7 */ "Iroqui",
+	/*  8 */ "Cherokee",
+	/*  9 */ "Apache",
+	/* 10 */ "Sioux",
+	/* 11 */ "Tupi",
 };
 
 static const char *cargo_list[] = {
@@ -272,7 +298,7 @@ struct savegame {
 
 	struct unit {
 		uint8_t x, y;
-		uint8_t mode; enum { COLONIST = 0, SOLDIER = 1, PIONEER = 2, MISSIONARY = 3, DRAGOON = 4, SCOUT = 5, TORY_REGULAR = 6, CONTINENTAL_CAVALRY = 7, TORY_CAVALRY = 8, CONTINENTAL_ARMY = 9, TREASURE = 0x0a, ARTILLERY = 0x0b, WAGON_TRAIN = 0x0c, CARAVEL = 0x0d, MERCHANTMAN = 0x0e, GALEON = 0x0f, PRIVATEER = 0x10, FRIGATE = 0x11, MAN_O_WAR = 0x12, INDIAN = 0x13, MOUNTED_BRAVE = 0x15 };
+		uint8_t type;
 		uint8_t owner : 4; /* likely to be owner of unit, eng, fra, spa, dut, indian tribes, etc. */
 		uint8_t unk04 : 4;
 		uint8_t unk05;
@@ -294,7 +320,7 @@ struct savegame {
 		uint8_t unk14;
 		uint8_t tools;
 		uint8_t turns_worked;
-		uint8_t profession; enum { EXPERT_FARMER = 0x00, EXPERT_FUR_TRAPPER = 0x04, EXPERT_LUMBERJACK = 0x05, EXPERT_ORE_MINER = 0x06, EXPERT_SILVER_MINER = 0x07, EXPERT_FISHERMAN = 0x08, MASTER_DISTILLER = 0x09, MASTER_TOBACCONIST = 0x0a, MASTER_WEAVER = 0x0b, MASTER_FUR_TRADER = 0x0c, MASTER_CARPENTER = 0x0d, MASTER_BLACKSMITH = 0x0e, MASTER_GUNSMITH = 0x0f, FIREBRAND_PREACHER = 0x10, ELDER_STATESMAN = 0x11, HARDY_PIONEER = 0x14, VETERAN_SOLDIER = 0x15, SEASONED_SCOUT = 0x16, JESUIT_MISSIONARY = 0x18, INDENTURED_SERVANT = 0x19, PETTY_CRIMINAL = 0x1a, FREE_COLONIST = 0x1c  };
+		uint8_t profession;
 		int16_t val1;
 		int16_t val2;
 	} __attribute__ ((packed)) *unit;
