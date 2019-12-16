@@ -472,18 +472,19 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 
 		printf("Colonists;\n");
 		for (int j = 0; j < colony[i].population; ++j)
-			printf("  %s\n", profession_list[ colony[i].colonists[j] ] );
+			printf("[%2d]  %s\n", j, profession_list[ colony[i].colonists[j] ] );
 		printf("\n");
 
 		for (int j = 0; j < sizeof (colony[i].unk6); ++j)
 			printf("%02x ", colony[i].unk6[j]);
-		printf("\n");
+		printf("\n\n");
 
-		printf("Colony tiles:");
-		for (int j = 0; j < 8; ++j)
-			printf(" %02x", colony[i].tiles[j]);
+		printf("%2d | %2d | %2d\n", colony[i].tiles[4], colony[i].tiles[0], colony[i].tiles[5]);
+                printf("-------------\n");
+		printf("%2d |    | %2d\n",  colony[i].tiles[3],                     colony[i].tiles[1]);
+                printf("-------------\n");
+		printf("%2d | %2d | %2d\n", colony[i].tiles[7], colony[i].tiles[2], colony[i].tiles[6]);
 		printf("\n");
-		enum { TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3 };
 
 		for (int j = 0; j < sizeof (colony[i].unk8); ++j)
 			printf("%02x ", colony[i].unk8[j]);
