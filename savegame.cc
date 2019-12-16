@@ -707,7 +707,7 @@ void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, in
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < unit_count; ++i) {
-		printf("[0x%03x] (%3d, %3d) ", i, unit[i].x, unit[i].y);
+		printf("[%3d] (%3d, %3d) ", i, unit[i].x, unit[i].y);
 		
 		switch (unit[i].mode) {
 			case savegame::unit::COLONIST:            printf("Colonist            "); break;
