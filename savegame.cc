@@ -462,17 +462,11 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 			printf("%02x ", colony[i].unk0[j]);
 		printf("\n");
 
-		for (int j = 0; j < sizeof (colony[i].unk1); ++j)
-			printf("%02x ", colony[i].unk1[j]);
-		printf("\n");
-
-		for (int j = 0; j < sizeof (colony[i].unk2); ++j)
-			printf("%02x ", colony[i].unk2[j]);
-		printf("\n");
-
 		printf("Colonists;\n");
 		for (int j = 0; j < colony[i].population; ++j)
-			printf("[%2d]  %s\n", j, profession_list[ colony[i].colonists[j] ] );
+			printf("[%2d]  %s working as %s\n",
+				j, profession_list[ colony[i].colonists[j]  ] ,
+				   profession_list[ colony[i].working_as[j] ] );
 		printf("\n");
 
 		for (int j = 0; j < sizeof (colony[i].unk6); ++j)
