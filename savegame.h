@@ -371,7 +371,8 @@ struct savegame {
 		uint8_t unk_big[717];
 		uint16_t x;
 		uint16_t y;
-		uint8_t unk7[2];
+		uint8_t zoom_level;
+		uint8_t unk7;
 		uint16_t viewport_x;
 		uint16_t viewport_y;
 	} __attribute__ ((packed)) stuff;

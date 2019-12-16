@@ -1048,10 +1048,19 @@ void print_stuff(const struct savegame::stuff *stuff)
 
 	printf("Active unit: (%3d, %3d)\n", stuff->x, stuff->y);
 
-	for (int i = 0; i < sizeof (stuff->unk7); ++i) {
-		printf("%02x ", stuff->unk7[i]);
+	printf("Zoom level: ");
+	switch (stuff->zoom_level) {
+		case 0: printf(" 15 x 12"); break;
+		case 1: printf(" 30 x 24"); break;
+		case 2: printf(" 60 x 48"); break;
+		case 3: printf("120 x 96"); break;
+		default:
+			printf("UNKNOWN: (%02x)", stuff->zoom_level);
+			break;
 	}
 	printf("\n");
+
+	printf("%02x\n", stuff->unk7);
 
 	printf("Viewport: (%3d, %3d)\n", stuff->viewport_x, stuff->viewport_y);
 }
