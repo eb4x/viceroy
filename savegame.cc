@@ -320,24 +320,24 @@ void print_head(  const struct savegame::head   *head)
 	printf("Tutorial 12: %5s\n", head->tut3.nr12 ? "true" : "false");
 	printf("\n");
 
-	for (int i = 0; i < sizeof(head->unk2); ++i)
+	for (int i = 0; i < sizeof (head->unk2); ++i)
 		printf("%02x ", head->unk2[i]);
 	printf("\n");
 
-	for (int i = 0; i < sizeof(head->unk3); ++i)
+	for (int i = 0; i < sizeof (head->unk3); ++i)
 		printf("%02x ", head->unk3[i]);
 	printf("\n");
 
 
-	for (int i = 0; i < sizeof(head->unk3a); ++i)
+	for (int i = 0; i < sizeof (head->unk3a); ++i)
 		printf("%02x ", head->unk3a[i]);
 	printf("\n");
 
-	for (int i = 0; i < sizeof(head->unk4); ++i)
+	for (int i = 0; i < sizeof (head->unk4); ++i)
 		printf("%02x ", head->unk4[i]);
 	printf("\n");
 
-	for (int i = 0; i < sizeof(head->unk5); ++i)
+	for (int i = 0; i < sizeof (head->unk5); ++i)
 		printf("%02x ", head->unk5[i]);
 	printf("\n");
 
@@ -355,7 +355,7 @@ void print_head(  const struct savegame::head   *head)
 	}
 	printf("\n");
 
-	for (int i = 0; i < sizeof(head->unk6); ++i)
+	for (int i = 0; i < sizeof (head->unk6); ++i)
 		printf("%02x ", head->unk6[i]);
 	printf("\n");
 
@@ -363,11 +363,11 @@ void print_head(  const struct savegame::head   *head)
 		printf("National relation: %3d %s\n", head->nation_relation[i], nation_list[i]);
 	printf("\n");
 
-	for (int i = 0; i < sizeof(head->unk8); ++i)
+	for (int i = 0; i < sizeof (head->unk8); ++i)
 		printf("%02x ", head->unk8[i]);
 	printf("\n");
 
-	for (int i = 0; i < sizeof(head->unk9); ++i)
+	for (int i = 0; i < sizeof (head->unk9); ++i)
 		printf("%02x ", head->unk9[i]);
 	printf("\n");
 
@@ -380,7 +380,7 @@ void print_head(  const struct savegame::head   *head)
 		}
 	}
 
-	for (int i = 0; i < sizeof(head->unka); ++i)
+	for (int i = 0; i < sizeof (head->unka); ++i)
 		printf("%02x ", head->unka[i]);
 	printf("\n");
 
@@ -424,6 +424,7 @@ void print_player(const struct savegame::player *player, int just_this_one)
 			case savegame::player::AI:     printf("AI     "); break;
 			default: printf("UNKNOWN (%02x)", player[i].control);
 		}
+		printf("diplomacy: %02x ", player[i].diplomacy);
 
 		printf("unknowns: %02x %02x\n", player[i].unk00, player[i].unk01);
 
@@ -436,7 +437,7 @@ void print_player(const struct savegame::player *player, int just_this_one)
 void print_other( const struct savegame::other  *other)
 {
 	printf("--other--\n");
-	for (int i = 0; i < 24; ++i)
+	for (int i = 0; i < sizeof (other->unkXX_xx); ++i)
 		printf("%02x ", other->unkXX_xx[i]);
 	printf("\n\n");
 }
@@ -451,17 +452,17 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 
 		printf("[%3d](%3d, %3d) Colony name: <%s>\n", i, colony[i].x, colony[i].y, colony[i].name);
 
-		for (int j = 0; j < 5; ++j)
+		for (int j = 0; j < sizeof (colony[i].unk0) ; ++j)
 			printf("%02x ", colony[i].unk0[j]);
 		printf("\n");
 
 		printf("Population: %2d\n", colony[i].population);
 
-		for (int j = 0; j < 16; ++j)
+		for (int j = 0; j < sizeof (colony[i].unk1); ++j)
 			printf("%02x ", colony[i].unk1[j]);
 		printf("\n");
 
-		for (int j = 0; j < 16; ++j)
+		for (int j = 0; j < sizeof (colony[i].unk2); ++j)
 			printf("%02x ", colony[i].unk2[j]);
 		printf("\n");
 
@@ -470,7 +471,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 			printf("  %s\n", profession_list[ colony[i].colonists[j] ] );
 		printf("\n");
 
-		for (int j = 0; j < 16; ++j)
+		for (int j = 0; j < sizeof (colony[i].unk6); ++j)
 			printf("%02x ", colony[i].unk6[j]);
 		printf("\n");
 
@@ -480,7 +481,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 		printf("\n");
 		enum { TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3 };
 
-		for (int j = 0; j < 12; ++j)
+		for (int j = 0; j < sizeof (colony[i].unk8); ++j)
 			printf("%02x ", colony[i].unk8[j]);
 		printf("\n");
 
@@ -616,11 +617,11 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 
 		printf("\n");
 
-		for (int j = 0; j < 6; ++j)
+		for (int j = 0; j < sizeof (colony[i].unk9); ++j)
 			printf("%02x ", colony[i].unk9[j]);
 		printf("\n");
 
-		for (int j = 0; j < 2; ++j)
+		for (int j = 0; j < sizeof (colony[i].unka); ++j)
 			printf("%02x ", colony[i].unka[j]);
 		printf("\n");
 
@@ -676,7 +677,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 			default:  printf("(%3d) unknown\n", colony[i].building_in_production); break;
 		}
 
-		for (int j = 0; j < 5; ++j)
+		for (int j = 0; j < sizeof (colony[i].unkb); ++j)
 			printf("%02x ", colony[i].unkb[j]);
 		printf("\n");
 
@@ -685,14 +686,13 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 			printf("  %11s: %3d\n", cargo_list[j], colony[i].stock[j]);
 		printf("\n");
 
-		for (int j = 0; j < 8; ++j)
+		for (int j = 0; j < sizeof (colony[i].unkd); ++j)
 			printf("%02x ", colony[i].unkd[j]);
 		printf("\n");
 
 		printf("rebel ratio: %d/%d = %d\n",
-			colony[i].rebel_dividend,  colony[i].rebel_divisor,
+			colony[i].rebel_dividend, colony[i].rebel_divisor,
 			(colony[i].rebel_dividend * 100) / colony[i].rebel_divisor);
-
 		printf("\n");
 
 		if (just_this_one != -1)
@@ -815,7 +815,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 		printf("%02x / %02x\n", nation[i].unk0, nation[i].unk1);
 		assert(nation[i].unk1 == 0);
 
-		for (int j = 0; j < sizeof(nation[i].unk2); ++j)
+		for (int j = 0; j < sizeof (nation[i].unk2); ++j)
 			printf("%02x ", nation[i].unk2[j]);
 		printf("\n");
 
@@ -823,7 +823,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 			nation[i].liberty_bells_last_turn,
 			nation[i].liberty_bells_total);
 
-		for (int j = 0; j < sizeof(nation[i].unk3); ++j)
+		for (int j = 0; j < sizeof (nation[i].unk3); ++j)
 			printf("%02x ", nation[i].unk3[j]);
 		printf("\n");
 
@@ -836,21 +836,21 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 
 		printf("Villages burned: %d\n", nation[i].villages_burned);
 
-		for (int j = 0; j < sizeof(nation[i].unk4); ++j)
+		for (int j = 0; j < sizeof (nation[i].unk4); ++j)
 			printf("%02x ", nation[i].unk4[j]);
 		printf("\n");
 
 		printf("Artillery count: %d\n", nation[i].artillery_count);
 		
 		
-		for (int j = 0; j < sizeof(nation[i].unk5); ++j)
+		for (int j = 0; j < sizeof (nation[i].unk5); ++j)
 			printf("%02x ", nation[i].unk5[j]);
 		printf("\n");
 
 		printf("Gold: %5d, Crosses: %4d\n",
 			nation[i].gold, nation[i].crosses);
 
-		for (int j = 0; j < sizeof(nation[i].unk6); ++j)
+		for (int j = 0; j < sizeof (nation[i].unk6); ++j)
 			printf("%d\n", nation[i].unk6[j]);
 		printf("\n");
 
@@ -874,7 +874,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 			}
 		}
 
-		for (int j = 0; j < sizeof(nation[i].unk7); ++j)
+		for (int j = 0; j < sizeof (nation[i].unk7); ++j)
 			printf("%02x ", nation[i].unk7[j]);
 		printf("\n");
 
@@ -912,12 +912,12 @@ void print_tribe(const struct savegame::tribe  *tribe,  uint16_t tribe_count, in
 
 		printf("mission(%2d) ", tribe[i].mission);
 
-		for (int j = 0; j < sizeof(tribe[i].unk1); ++j)
+		for (int j = 0; j < sizeof (tribe[i].unk1); ++j)
 			printf("%02x ", tribe[i].unk1[j]);
 
 		printf("panic(%2d) ", tribe[i].panic);
 
-		for (int j = 0; j < sizeof(tribe[i].unk2); ++j)
+		for (int j = 0; j < sizeof (tribe[i].unk2); ++j)
 			printf("%02x ", tribe[i].unk2[j]);
 
 		printf("%02x\n", tribe[i].population_loss_in_current_turn);
@@ -944,7 +944,7 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 			case 7: printf("Tupi    :"); break;
 		}
 
-		for (int j = 0; j < sizeof(ir[i].unk0); ++j) {
+		for (int j = 0; j < sizeof (ir[i].unk0); ++j) {
 			printf("%02x ", ir[i].unk0[j]);
 		}
 
@@ -958,7 +958,7 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 			}
 		}
 
-		for (int j = 0; j < sizeof(ir[i].unk1); ++j) {
+		for (int j = 0; j < sizeof (ir[i].unk1); ++j) {
 			printf("%02x ", ir[i].unk1[j]);
 		}
 
@@ -983,7 +983,7 @@ void print_stuff(const struct savegame::stuff *stuff)
 {
 	printf("-- stuff --\n");
 
-	for (int i = 0; i < sizeof(stuff->unk_big); ++i) {
+	for (int i = 0; i < sizeof (stuff->unk_big); ++i) {
 		if (i % 78 == 0)
 			printf("\n[0x%03x] ", i);
 		printf("%02x ", stuff->unk_big[i]);
@@ -992,7 +992,7 @@ void print_stuff(const struct savegame::stuff *stuff)
 
 	printf("Active unit: (%3d, %3d)\n", stuff->x, stuff->y);
 
-	for (int i = 0; i < sizeof(stuff->unk7); ++i) {
+	for (int i = 0; i < sizeof (stuff->unk7); ++i) {
 		printf("%02x ", stuff->unk7[i]);
 	}
 	printf("\n");
@@ -1016,7 +1016,7 @@ void print_map(const struct savegame::map *map)
 void print_tail(const struct savegame::tail *tail)
 {
 	printf("-- tail --\n");
-	for (int i = 0; i < sizeof(tail->unk); ++i) {
+	for (int i = 0; i < sizeof (tail->unk); ++i) {
 		if (i % 20 == 0)
 			printf("\n");
 		printf("%02x ", tail->unk[i]);
