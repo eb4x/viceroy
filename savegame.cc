@@ -259,6 +259,8 @@ int main(int argc, char *argv[])
 
 void print_head(  const struct savegame::head   *head)
 {
+	printf("-- head --\n");
+
 	printf("Signature: %s: %s, Difficulty: %s\n", head->sig_colonize, strncmp(head->sig_colonize, "COLONIZE", 9) ? "INVALID" : "OK", difficulty_list[head->difficulty]);
 	printf("Year: %4d %s, Turn: %2d, Tribes: %d, Units: %d, Colonies: %d\n",
 		 head->year, head->autumn ? "autumn" : "spring", head->turn, head->tribe_count, head->unit_count, head->colony_count);
@@ -414,9 +416,10 @@ void print_head(  const struct savegame::head   *head)
 
 void print_player(const struct savegame::player *player, int just_this_one)
 {
+	printf("-- player --\n");
+
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
-	printf("start: %d\n", start);
 	for (int i = start; i < 4; ++i) {
 		printf("%s: %23s / %23s : ", nation_list[i], player[i].name, player[i].country);
 		switch (player[i].control) {
@@ -436,7 +439,8 @@ void print_player(const struct savegame::player *player, int just_this_one)
 
 void print_other( const struct savegame::other  *other)
 {
-	printf("--other--\n");
+	printf("-- other --\n");
+
 	for (int i = 0; i < sizeof (other->unkXX_xx); ++i)
 		printf("%02x ", other->unkXX_xx[i]);
 	printf("\n\n");
@@ -444,19 +448,19 @@ void print_other( const struct savegame::other  *other)
 
 void print_colony(const struct savegame::colony *colony, uint16_t colony_count, int just_this_one)
 {
+	printf("-- colonies --\n");
+
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < colony_count; ++i) {
 		if ( colony[i].nation != 3) /* Skip all non-dutch */
 			continue;
 
-		printf("[%3d](%3d, %3d) Colony name: <%s>\n", i, colony[i].x, colony[i].y, colony[i].name);
+		printf("[%3d] (%3d, %3d): %2d %s\n", i, colony[i].x, colony[i].y, colony[i].population, colony[i].name);
 
 		for (int j = 0; j < sizeof (colony[i].unk0) ; ++j)
 			printf("%02x ", colony[i].unk0[j]);
 		printf("\n");
-
-		printf("Population: %2d\n", colony[i].population);
 
 		for (int j = 0; j < sizeof (colony[i].unk1); ++j)
 			printf("%02x ", colony[i].unk1[j]);
@@ -704,10 +708,12 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 
 void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, int just_this_one)
 {
+	printf("-- units --\n");
+
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < unit_count; ++i) {
-		printf("[%3d] (%3d, %3d) ", i, unit[i].x, unit[i].y);
+		printf("[%3d] (%3d, %3d): ", i, unit[i].x, unit[i].y);
 		
 		switch (unit[i].mode) {
 			case savegame::unit::COLONIST:            printf("Colonist            "); break;
@@ -794,6 +800,8 @@ void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, in
 
 void print_nation(const struct savegame::nation *nation, int just_this_one)
 {
+	printf("-- nations --\n");
+
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < 4; ++i) {
@@ -889,16 +897,16 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 			break;
 	}
 	printf("\n");
-
 }
 
 void print_tribe(const struct savegame::tribe  *tribe,  uint16_t tribe_count, int just_this_one)
 {
+	printf("-- tribes --\n");
+
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < tribe_count; ++i) {
-		printf("tribe: ");
-		printf("(%3d, %3d) %2d %s : ", tribe[i].x, tribe[i].y, tribe[i].population, nation_list[tribe[i].nation]);
+		printf("[%3d] (%3d, %3d): %2d %s : ", i, tribe[i].x, tribe[i].y, tribe[i].population, nation_list[tribe[i].nation]);
 		printf("state: artillery(%d) learned(%d) capital(%d) scouted(%d) %d %d %d %d, ",
 			tribe[i].state.artillery, tribe[i].state.learned, tribe[i].state.capital, tribe[i].state.scouted,
 			tribe[i].state.unk5, tribe[i].state.unk6, tribe[i].state.unk7, tribe[i].state.unk8);
@@ -923,6 +931,8 @@ void print_tribe(const struct savegame::tribe  *tribe,  uint16_t tribe_count, in
 
 void print_indian(const struct savegame::indian_relations *ir, int just_this_one)
 {
+	printf("-- indian --\n");
+
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = 0; i < 8; ++i) {
@@ -995,6 +1005,8 @@ void print_stuff(const struct savegame::stuff *stuff)
 
 void print_map(const struct savegame::map *map)
 {
+	printf("-- map --\n");
+
 	for (int i = 0; i < 4; ++i) {
 		for (int y = 0; y < 72; ++y) {
 			for (int x = 0; x < 58; ++x)
@@ -1009,6 +1021,7 @@ void print_map(const struct savegame::map *map)
 void print_tail(const struct savegame::tail *tail)
 {
 	printf("-- tail --\n");
+
 	for (int i = 0; i < sizeof (tail->unk); ++i) {
 		if (i % 20 == 0)
 			printf("\n");
