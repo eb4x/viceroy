@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 	 */
 	int opt_head = 0, opt_player = 0, opt_other = 0, opt_colony = 0, opt_unit = 0,
 	    opt_nation = 0, opt_tribe = 0, opt_stuff = 0, opt_indian = 0, opt_map = 0,
-		opt_tail = 0, opt_help = 0, opt_colony10 = 0;
+	    opt_tail = 0, opt_help = 0, opt_colony10 = 0;
 
 	static struct option long_options[] = {
 		{ "head",     no_argument,       NULL,          'H' },
@@ -96,28 +96,28 @@ int main(int argc, char *argv[])
 			case 'H': opt_head   = -1; break;
 			case 'p': opt_player = -1;
 				if (optarg && isdigit(optarg[0]) )
-						 opt_player = atoi(optarg);
+					opt_player = atoi(optarg) + 1;
 				break;
 			case 'o': opt_other  = -1; break;
 			case 'c': opt_colony = -1;
 				if (optarg && isdigit(optarg[0]) )
-						 opt_colony = atoi(optarg);
+					opt_colony = atoi(optarg) + 1;
 				break;
 			case 'u': opt_unit   = -1;
 				if (optarg && isdigit(optarg[0]) )
-						 opt_unit = atoi(optarg);
+					opt_unit = atoi(optarg) + 1;
 				break;
 			case 'n': opt_nation = -1;
 				if (optarg && isdigit(optarg[0]) )
-						 opt_nation = atoi(optarg);
+					opt_nation = atoi(optarg) + 1;
 				break;
 			case 't': opt_tribe  = -1;
 				if (optarg && isdigit(optarg[0]) )
-						 opt_tribe = atoi(optarg);
+					opt_tribe = atoi(optarg) + 1;
 				break;
 			case 'i': opt_indian = -1;
 				if (optarg && isdigit(optarg[0]) )
-						 opt_indian = atoi(optarg);
+					opt_indian = atoi(optarg) + 1;
 				break;
 			case 's': opt_stuff  = -1; break;
 			case 'm': opt_map    = -1; break;
@@ -180,25 +180,25 @@ int main(int argc, char *argv[])
 			print_head(&(sg.head));
 	
 		if (opt_player)
-			print_player(sg.player, opt_player);
+			print_player(sg.player, (opt_player == -1) ? opt_player: opt_player - 1);
 	
 		if (opt_other)
 			print_other(&(sg.other));
 	
 		if (opt_colony)
-			print_colony(sg.colony, sg.head.colony_count, opt_colony);
+			print_colony(sg.colony, sg.head.colony_count, (opt_colony == -1) ? opt_colony : opt_colony - 1);
 	
 		if (opt_unit)
-			print_unit(sg.unit, sg.head.unit_count, opt_unit);
+			print_unit(sg.unit, sg.head.unit_count, (opt_unit == -1) ? opt_unit : opt_unit - 1);
 	
 		if (opt_nation)
-			print_nation(sg.nation, opt_nation);
+			print_nation(sg.nation, (opt_nation == -1) ? opt_nation : opt_nation - 1);
 	
 		if (opt_tribe)
-			print_tribe(sg.tribe, sg.head.tribe_count, opt_tribe);
+			print_tribe(sg.tribe, sg.head.tribe_count, (opt_tribe == -1) ? opt_tribe : opt_tribe - 1);
 	
 		if (opt_indian)
-			print_indian(sg.indian_relations, opt_indian);
+			print_indian(sg.indian_relations, (opt_indian == -1) ? opt_indian : opt_indian - 1);
 	
 		if (opt_stuff)
 			print_stuff(&(sg.stuff));
@@ -374,13 +374,13 @@ void print_head(  const struct savegame::head   *head)
 	for (int i = 0; i < 4; ++i) {
 		switch (i) {
 			case 0: printf("%d Regulars, ",  head->expeditionary_force[i]); break;
-			case 1:	printf("%d Cavalry,  ",  head->expeditionary_force[i]); break;
-			case 2:	printf("%d Man-O-War, ", head->expeditionary_force[i]); break;
-			case 3:	printf("%d Artillery\n", head->expeditionary_force[i]); break;
+			case 1: printf("%d Cavalry,  ",  head->expeditionary_force[i]); break;
+			case 2: printf("%d Man-O-War, ", head->expeditionary_force[i]); break;
+			case 3: printf("%d Artillery\n", head->expeditionary_force[i]); break;
 		}
 	}
 
-	for (int i = 0; i <  sizeof(head->unka); ++i)
+	for (int i = 0; i < sizeof(head->unka); ++i)
 		printf("%02x ", head->unka[i]);
 	printf("\n");
 
@@ -405,7 +405,7 @@ void print_head(  const struct savegame::head   *head)
 	printf("event_unke                           : %5s\n", head->event.unke                           ? "true" : "false");
 	printf("event_unkf                           : %5s\n", head->event.unkf                           ? "true" : "false");
 
-	for (int i = 0; i <  2; ++i)
+	for (int i = 0; i < 2; ++i)
 		printf("%02x ", head->unkb[i]);
 	printf("\n");
 
@@ -416,6 +416,7 @@ void print_player(const struct savegame::player *player, int just_this_one)
 {
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
+	printf("start: %d\n", start);
 	for (int i = start; i < 4; ++i) {
 		printf("%s: %23s / %23s : ", nation_list[i], player[i].name, player[i].country);
 		switch (player[i].control) {
@@ -450,7 +451,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 
 		printf("[%3d](%3d, %3d) Colony name: <%s>\n", i, colony[i].x, colony[i].y, colony[i].name);
 
-		for (int j = 0; j <  5; ++j)
+		for (int j = 0; j < 5; ++j)
 			printf("%02x ", colony[i].unk0[j]);
 		printf("\n");
 
@@ -474,7 +475,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 		printf("\n");
 
 		printf("Colony tiles:");
-		for (int j = 0; j <  8; ++j)
+		for (int j = 0; j < 8; ++j)
 			printf(" %02x", colony[i].tiles[j]);
 		printf("\n");
 		enum { TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3 };
@@ -615,11 +616,11 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 
 		printf("\n");
 
-		for (int j = 0; j <  6; ++j)
+		for (int j = 0; j < 6; ++j)
 			printf("%02x ", colony[i].unk9[j]);
 		printf("\n");
 
-		for (int j = 0; j <  2; ++j)
+		for (int j = 0; j < 2; ++j)
 			printf("%02x ", colony[i].unka[j]);
 		printf("\n");
 
@@ -675,7 +676,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 			default:  printf("(%3d) unknown\n", colony[i].building_in_production); break;
 		}
 
-		for (int j = 0; j <  5; ++j)
+		for (int j = 0; j < 5; ++j)
 			printf("%02x ", colony[i].unkb[j]);
 		printf("\n");
 
@@ -684,7 +685,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 			printf("  %11s: %3d\n", cargo_list[j], colony[i].stock[j]);
 		printf("\n");
 
-		for (int j = 0; j <  8; ++j)
+		for (int j = 0; j < 8; ++j)
 			printf("%02x ", colony[i].unkd[j]);
 		printf("\n");
 
@@ -814,7 +815,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 		printf("%02x / %02x\n", nation[i].unk0, nation[i].unk1);
 		assert(nation[i].unk1 == 0);
 
-		for (int j = 0; j <  sizeof(nation[i].unk2); ++j)
+		for (int j = 0; j < sizeof(nation[i].unk2); ++j)
 			printf("%02x ", nation[i].unk2[j]);
 		printf("\n");
 
@@ -822,7 +823,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 			nation[i].liberty_bells_last_turn,
 			nation[i].liberty_bells_total);
 
-		for (int j = 0; j <  2; ++j)
+		for (int j = 0; j < sizeof(nation[i].unk3); ++j)
 			printf("%02x ", nation[i].unk3[j]);
 		printf("\n");
 
@@ -849,11 +850,11 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 		printf("Gold: %5d, Crosses: %4d\n",
 			nation[i].gold, nation[i].crosses);
 
-		for (int j = 0; j <  sizeof(nation[i].unk6); ++j)
+		for (int j = 0; j < sizeof(nation[i].unk6); ++j)
 			printf("%d\n", nation[i].unk6[j]);
 		printf("\n");
 
-		for (int j = 0; j <  8; ++j) {
+		for (int j = 0; j < 8; ++j) {
 			printf("Indian status - ");
 			switch (j) {
 				case 0: printf("Inca    :"); break;
@@ -918,7 +919,8 @@ void print_tribe(const struct savegame::tribe  *tribe,  uint16_t tribe_count, in
 
 		for (int j = 0; j < sizeof(tribe[i].unk2); ++j)
 			printf("%02x ", tribe[i].unk2[j]);
-		printf("\n");
+
+		printf("%02x\n", tribe[i].population_loss_in_current_turn);
 
 		if (just_this_one != -1)
 			break;
