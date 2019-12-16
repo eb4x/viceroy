@@ -344,14 +344,30 @@ void print_head(  const struct savegame::head   *head)
 		printf("%02x ", head->unk1[i]);
 	printf("\n\n");
 
-	printf("HowToWin   : %5s\n", head->tut2.howtowin ? "true" : "false");
-	printf("tut2.x2    : %5s\n", head->tut2.unk2 ? "true" : "false");
-	printf("tut2.x3    : %5s\n", head->tut2.unk3 ? "true" : "false");
-	printf("tut2.x4    : %5s\n", head->tut2.unk4 ? "true" : "false");
-	printf("tut2.x5    : %5s\n", head->tut2.unk5 ? "true" : "false");
-	printf("tut2.x6    : %5s\n", head->tut2.unk6 ? "true" : "false");
-	printf("Tutorial  3: %5s\n", head->tut2.nr3  ? "true" : "false");
-	printf("Tutorial  4: %5s\n", head->tut2.nr4  ? "true" : "false");
+	printf("Set Game Options:\n");
+	printf("  %c Show Indian Moves\n",   head->game_options.show_indian_moves   ? '*' : ' ');
+	printf("  %c Show Foreign Moves\n",  head->game_options.show_foreign_moves  ? '*' : ' ');
+	printf("  %c Fast Piece Slide\n",    head->game_options.fast_piece_slide    ? '*' : ' ');
+	printf("  %c End of Turn\n",         head->game_options.end_of_turn         ? '*' : ' ');
+	printf("  %c Autosave\n",            head->game_options.autosave            ? '*' : ' ');
+	printf("  %c Combat Analysis\n",     head->game_options.combat_analysis     ? '*' : ' ');
+	printf("  %c Water Color Cycling\n", head->game_options.water_color_cycling ? ' ' : '*'); // I don't know why it's inverted
+	printf("  %c Tutorial Hints\n",      head->game_options.tutorial_hints      ? '*' : ' ');
+
+	assert(head->game_options.unknown7 == 0);
+	assert(head->game_options.unknown == 0);
+
+	printf("HowToWin        : %5s\n", head->tut2.howtowin ? "true" : "false");
+
+	printf("Set Sound Options:\n");
+	printf("  %c Background Music\n", head->tut2.background_music ? '*' : ' ');
+	printf("  %c Event Music\n",      head->tut2.event_music      ? '*' : ' ');
+	printf("  %c Sound Effects\n",    head->tut2.sound_effects    ? '*' : ' ');
+
+	printf("tut2.x5         : %5s\n", head->tut2.unk5 ? "true" : "false");
+	printf("tut2.x6         : %5s\n", head->tut2.unk6 ? "true" : "false");
+	printf("Tutorial       3: %5s\n", head->tut2.nr3  ? "true" : "false");
+	printf("Tutorial       4: %5s\n", head->tut2.nr4  ? "true" : "false");
 	printf("\n");
 
 	printf("Tutorial  5: %5s\n", head->tut3.nr5  ? "true" : "false");

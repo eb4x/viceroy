@@ -118,27 +118,40 @@ struct savegame {
 			uint8_t nr19  : 1;
 		} __attribute__ ((packed)) tut1;
 
-		uint8_t unk1[3];
+		uint8_t unk1[1];
+
+		struct game_options {
+			uint16_t unknown7           : 7;
+			uint16_t tutorial_hints     : 1;
+			uint16_t water_color_cycling: 1;
+			uint16_t combat_analysis    : 1;
+			uint16_t autosave           : 1;
+			uint16_t end_of_turn        : 1;
+			uint16_t fast_piece_slide   : 1;
+			uint16_t unknown            : 1;
+			uint16_t show_foreign_moves : 1;
+			uint16_t show_indian_moves  : 1;
+		} __attribute__ ((packed)) game_options;
 
 		struct colony_report_options {
-			uint16_t labels_on_cargo_and_terrain : 1;
-			uint16_t labels_on_buildings : 1;
-			uint16_t report_new_cargos_available : 1;
-			uint16_t report_inefficient_government : 1;
+			uint16_t labels_on_cargo_and_terrain        : 1;
+			uint16_t labels_on_buildings                : 1;
+			uint16_t report_new_cargos_available        : 1;
+			uint16_t report_inefficient_government      : 1;
 			uint16_t report_tools_needed_for_production : 1;
-			uint16_t report_raw_materials_shortages : 1;
-			uint16_t report_food_shortages : 1;
-			uint16_t report_when_colonists_trained : 1;
-			uint16_t report_sons_of_liberty_membership : 1;
-			uint16_t report_rebel_majorities : 1;
-			uint16_t unused : 6;
+			uint16_t report_raw_materials_shortages     : 1;
+			uint16_t report_food_shortages              : 1;
+			uint16_t report_when_colonists_trained      : 1;
+			uint16_t report_sons_of_liberty_membership  : 1;
+			uint16_t report_rebel_majorities            : 1;
+			uint16_t unused                             : 6;
 		} __attribute__ ((packed)) colony_report_options;
 
 		struct tut2 {
-			uint8_t howtowin : 1;
-			uint8_t unk2 : 1;
-			uint8_t unk3 : 1;
-			uint8_t unk4 : 1;
+			uint8_t howtowin         : 1;
+			uint8_t background_music : 1;
+			uint8_t event_music      : 1;
+			uint8_t sound_effects    : 1;
 			uint8_t unk5 : 1;
 			uint8_t unk6 : 1;
 			uint8_t nr3  : 1;
