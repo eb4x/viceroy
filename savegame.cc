@@ -1074,3 +1074,4 @@ void dump(void *address, size_t bytes, const char *filename)
 	fclose(fp);
 }
 
+// vim: ts=3
