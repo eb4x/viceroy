@@ -132,7 +132,9 @@ struct savegame {
 
 	struct head {
 		char sig_colonize[9];
-		uint8_t unk0[ 7];
+		uint8_t unk0[ 3];
+		uint16_t map_size_x;
+		uint16_t map_size_y;
 		struct tut1 {
 			uint8_t nr13  : 1;
 			uint8_t nr14  : 1;
@@ -178,10 +180,10 @@ struct savegame {
 			uint8_t background_music : 1;
 			uint8_t event_music      : 1;
 			uint8_t sound_effects    : 1;
-			uint8_t unk5 : 1;
-			uint8_t unk6 : 1;
-			uint8_t nr3  : 1;
-			uint8_t nr4  : 1;
+			uint8_t nr1 : 1; // shown immediately on game-start
+			uint8_t nr2 : 1; // probably not used, also triggers event_discovery_of_the_new_world
+			uint8_t nr3 : 1;
+			uint8_t nr4 : 1;
 		} __attribute__ ((packed)) tut2;
 
 		struct tut3     {
@@ -224,15 +226,15 @@ struct savegame {
 			uint16_t the_inca_nation                : 1;
 			uint16_t discovery_of_the_pacific_ocean : 1;
 			uint16_t entering_indian_village        : 1;
-			uint16_t unk7                           : 1;
+			uint16_t the_fountain_of_youth          : 1;
 			uint16_t cargo_from_the_new_world       : 1;
 			uint16_t meeting_fellow_europeans       : 1;
-			uint16_t unka                           : 1;
-			uint16_t unkb                           : 1;
+			uint16_t colony_burning                 : 1;
+			uint16_t colony_destroyed               : 1;
 			uint16_t indian_raid                    : 1;
-			uint16_t unkd                           : 1;
-			uint16_t unke                           : 1;
-			uint16_t unkf                           : 1;
+			uint16_t woodcut14                      : 1;
+			uint16_t woodcut15                      : 1;
+			uint16_t woodcut16                      : 1;
 		} __attribute__ ((packed)) event;
 		uint8_t unkb[2];
 	} __attribute__ ((packed)) head;
@@ -285,8 +287,8 @@ struct savegame {
 			uint16_t unused : 6;
 		} __attribute__ ((packed)) buildings;
 
+		uint8_t unka[2]; // customs house bits?
 		uint8_t unk9[6];
-		uint8_t unka[ 2];
 		uint16_t hammers;
 		uint8_t building_in_production;
 		uint8_t unkb[ 5];

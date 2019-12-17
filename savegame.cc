@@ -221,8 +221,6 @@ int main(int argc, char *argv[])
 			}
 
 			for (int i = 0; i < sg.head.colony_count; ++i) {
-				
-				/* If it's our colony */
 				if (sg.colony[i].nation == player_nation) {
 
 					for (int j = 0; j < 32; ++j) {
@@ -271,12 +269,15 @@ int main(int argc, char *argv[])
 					continue;
 				}
 
-				/* Opposing nations,
-				 * remove pesky stockades */
+				// Opposing nations, remove pesky stockades
 				sg.colony[i].buildings.stockade = 0;
 			}
+
+
 	
 			FILE *fop = fopen("COLONY10.SAV", "w");
+			sg.head.map_size_x = 72;
+			sg.head.map_size_y = 58;
 			fwrite(&sg.head, sizeof (struct savegame::head), 1, fop);
 			fwrite(&sg.player, sizeof (struct savegame::player), 4, fop);
 			fwrite(&sg.other, sizeof (struct savegame::other), 1, fop);
@@ -303,9 +304,23 @@ void print_head(  const struct savegame::head   *head)
 {
 	printf("-- head --\n");
 
-	printf("Signature: %s: %s, Difficulty: %s\n", head->sig_colonize, strncmp(head->sig_colonize, "COLONIZE", 9) ? "INVALID" : "OK", difficulty_list[head->difficulty]);
-	printf("Year: %4d %s, Turn: %2d, Tribes: %d, Units: %d, Colonies: %d\n",
-		 head->year, head->autumn ? "autumn" : "spring", head->turn, head->tribe_count, head->unit_count, head->colony_count);
+	printf("Signature: %s: %s\n",
+		head->sig_colonize,
+		strncmp(head->sig_colonize, "COLONIZE", 9) ? "INVALID" : "OK");
+
+	printf("Map size: %2d x %2d\n",
+		head->map_size_x, head->map_size_y);
+
+	printf("Difficulty: %s\n",
+		difficulty_list[head->difficulty]);
+
+	printf("%s %4d, Turn: %2d, Tribes: %d, Units: %d, Colonies: %d\n",
+		head->autumn ? "Autumn" : "Spring",
+		head->year,
+		head->turn,
+		head->tribe_count,
+		head->unit_count,
+		head->colony_count);
 
 //	printf("Active unit: "); print_unit(sg.unit, sg.head.unit_count, head->active_unit);
 
@@ -364,12 +379,10 @@ void print_head(  const struct savegame::head   *head)
 	printf("  %c Event Music\n",      head->tut2.event_music      ? '*' : ' ');
 	printf("  %c Sound Effects\n",    head->tut2.sound_effects    ? '*' : ' ');
 
-	printf("tut2.x5         : %5s\n", head->tut2.unk5 ? "true" : "false");
-	printf("tut2.x6         : %5s\n", head->tut2.unk6 ? "true" : "false");
-	printf("Tutorial       3: %5s\n", head->tut2.nr3  ? "true" : "false");
-	printf("Tutorial       4: %5s\n", head->tut2.nr4  ? "true" : "false");
-	printf("\n");
-
+	printf("Tutorial  1: %5s\n", head->tut2.nr1  ? "true" : "false");
+	printf("Tutorial  2: %5s\n", head->tut2.nr2  ? "true" : "false");
+	printf("Tutorial  3: %5s\n", head->tut2.nr3  ? "true" : "false");
+	printf("Tutorial  4: %5s\n", head->tut2.nr4  ? "true" : "false");
 	printf("Tutorial  5: %5s\n", head->tut3.nr5  ? "true" : "false");
 	printf("Tutorial  6: %5s\n", head->tut3.nr6  ? "true" : "false");
 	printf("Tutorial  7: %5s\n", head->tut3.nr7  ? "true" : "false");
@@ -379,6 +392,8 @@ void print_head(  const struct savegame::head   *head)
 	printf("Tutorial 11: %5s\n", head->tut3.nr11 ? "true" : "false");
 	printf("Tutorial 12: %5s\n", head->tut3.nr12 ? "true" : "false");
 	printf("\n");
+
+	assert(head->tut2.nr2 == 0); // I don't think this is used
 
 	for (int i = 0; i < sizeof (head->unk2); ++i)
 		printf("%02x ", head->unk2[i]);
@@ -455,15 +470,15 @@ void print_head(  const struct savegame::head   *head)
 	printf("event_the_inca_nation                : %5s\n", head->event.the_inca_nation                ? "true" : "false");
 	printf("event_discovery_of_the_pacific_ocean : %5s\n", head->event.discovery_of_the_pacific_ocean ? "true" : "false");
 	printf("event_entering_indian_village        : %5s\n", head->event.entering_indian_village        ? "true" : "false");
-	printf("event_unk7                           : %5s\n", head->event.unk7                           ? "true" : "false");
+	printf("event_the_fountain_of_youth          : %5s\n", head->event.the_fountain_of_youth          ? "true" : "false");
 	printf("event_cargo_from_the_new_world       : %5s\n", head->event.cargo_from_the_new_world       ? "true" : "false");
 	printf("event_meeting_fellow_europeans       : %5s\n", head->event.meeting_fellow_europeans       ? "true" : "false");
-	printf("event_unka                           : %5s\n", head->event.unka                           ? "true" : "false");
-	printf("event_unkb                           : %5s\n", head->event.unkb                           ? "true" : "false");
+	printf("event_colony_burning                 : %5s\n", head->event.colony_burning                 ? "true" : "false");
+	printf("event_colony_destroyed               : %5s\n", head->event.colony_destroyed               ? "true" : "false");
 	printf("event_indian_raid                    : %5s\n", head->event.indian_raid                    ? "true" : "false");
-	printf("event_unkd                           : %5s\n", head->event.unkd                           ? "true" : "false");
-	printf("event_unke                           : %5s\n", head->event.unke                           ? "true" : "false");
-	printf("event_unkf                           : %5s\n", head->event.unkf                           ? "true" : "false");
+	printf("event_woodcut14                      : %5s\n", head->event.woodcut14                      ? "true" : "false");
+	printf("event_woodcut15                      : %5s\n", head->event.woodcut15                      ? "true" : "false");
+	printf("event_woodcut16                      : %5s\n", head->event.woodcut16                      ? "true" : "false");
 
 	for (int i = 0; i < 2; ++i)
 		printf("%02x ", head->unkb[i]);
