@@ -308,23 +308,20 @@ struct savegame {
 		uint8_t unk06;
 		uint8_t unk07;
 		uint8_t order; enum { PLOW = 8, ROAD = 9 };
-		uint8_t unk09;
-		uint8_t unk0a;
-		uint8_t unk0b;
-		uint8_t unk0c;
-		uint8_t unk0d;
-		uint8_t unk0e;
-		uint8_t unk0f;
-		uint8_t unk10;
-		uint8_t unk11;
-		uint8_t unk12;
-		uint8_t unk13;
-		uint8_t unk14;
-		uint8_t tools;
+
+		uint8_t unk08[ 3];
+		uint8_t holds_occupied;
+		uint8_t cargo_item_0 : 4;
+		uint8_t cargo_item_1 : 4;
+		uint8_t cargo_item_2 : 4;
+		uint8_t cargo_item_3 : 4;
+		uint8_t cargo_item_4 : 4;
+		uint8_t cargo_item_5 : 4;
+		uint8_t cargo_hold[6];
 		uint8_t turns_worked;
 		uint8_t profession;
 		int16_t val1;
-		int16_t val2;
+		int16_t val2; // index to unit being transported? (treasure)
 	} __attribute__ ((packed)) *unit;
 
 	struct nation {

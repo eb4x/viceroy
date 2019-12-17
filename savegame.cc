@@ -787,7 +787,6 @@ void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, in
 		printf("%-11s ", nation_list[unit[i].owner] );
 		printf("m:%02x ", unit[i].moves);
 
-		printf("t:%3d ", unit[i].tools);
 		printf("tw:%d ", unit[i].turns_worked);
 
 		switch (unit[i].type) {
@@ -807,6 +806,7 @@ void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, in
 				break;
 			case 13: //savegame::unit::CARAVEL:
 			case 14: //savegame::uniT::MERCHANTMAN:
+			case 15: //savegame::unit::GALEON:
 				printf("%-22s", unit_type_list[unit[i].type]);
 				assert(0 == unit[i].profession);
 				break;
@@ -814,30 +814,28 @@ void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, in
 				printf("TYPE: %2d PROF: %2d     ", unit[i].type, unit[i].profession);
 		}
 
-		printf("%2x %02x %02x %02x %02x "
-		       "%02x %02x %02x %02x %02x "
-		       "%02x ",
+		assert(unit[i].holds_occupied >= 0 &&
+			unit[i].holds_occupied < 7 );
+
+		printf("cargo_holds (%d) : [ %s:%3d, %s:%3d, %s:%3d, %s:%3d, %s:%3d, %s:%3d ]",
+			unit[i].holds_occupied,
+			(unit[i].holds_occupied > 0) ? cargo_list[unit[i].cargo_item_0] : "", (unit[i].holds_occupied > 0) ? unit[i].cargo_hold[0] : -1,
+			(unit[i].holds_occupied > 1) ? cargo_list[unit[i].cargo_item_1] : "", (unit[i].holds_occupied > 1) ? unit[i].cargo_hold[1] : -1,
+			(unit[i].holds_occupied > 2) ? cargo_list[unit[i].cargo_item_2] : "", (unit[i].holds_occupied > 2) ? unit[i].cargo_hold[2] : -1,
+			(unit[i].holds_occupied > 3) ? cargo_list[unit[i].cargo_item_3] : "", (unit[i].holds_occupied > 3) ? unit[i].cargo_hold[3] : -1,
+			(unit[i].holds_occupied > 4) ? cargo_list[unit[i].cargo_item_4] : "", (unit[i].holds_occupied > 4) ? unit[i].cargo_hold[4] : -1,
+			(unit[i].holds_occupied > 5) ? cargo_list[unit[i].cargo_item_5] : "", (unit[i].holds_occupied > 5) ? unit[i].cargo_hold[5] : -1);
+
+		printf("(%x) %02x %02x %02x ",
 			unit[i].unk04,
 			unit[i].unk05,
 			unit[i].unk06,
-			unit[i].unk07,
-			unit[i].unk09,
+			unit[i].unk07);
 
-			unit[i].unk0a,
-			unit[i].unk0b,
-			unit[i].unk0c,
-			unit[i].unk0d,
-			unit[i].unk0e,
-			unit[i].unk0f);
+		for (int j = 0; j < sizeof (unit[i].unk08); ++j)
+			printf("%02x ", unit[i].unk08[j]);
 
-		printf("%02x %02x %02x %02x %02x "
-		       "%3d %3d\n",
-			unit[i].unk10,
-			unit[i].unk11,
-			unit[i].unk12,
-			unit[i].unk13,
-			unit[i].unk14,
-
+		printf("%3d %3d\n",
 			unit[i].val1,
 			unit[i].val2);
 
