@@ -502,7 +502,8 @@ void print_player(const struct savegame::player *player, int just_this_one)
 		}
 		printf("diplomacy: %02x ", player[i].diplomacy);
 
-		printf("unknowns: %02x %02x\n", player[i].unk00, player[i].unk01);
+		printf("unknown: %02x ", player[i].unk00);
+		printf("colonies: %2d\n", player[i].founded_colonies);
 
 		if (just_this_one != -1)
 			break;
@@ -937,7 +938,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 				nation[i].trade.gold[j],
 				nation[i].trade.tons[j],
 				nation[i].trade.tons2[j]);
-			assert(nation[i].trade.tons[j] == nation[i].trade.tons2[j]); //under which circumstances are these two not equal?
+			//assert(nation[i].trade.tons[j] == nation[i].trade.tons2[j]); //under which circumstances are these two not equal?
 		}
 
 		printf("\n");
