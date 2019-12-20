@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 
 			default:
 				fprintf(stderr, "case '%c' (0x%02x): ", c, c);
-				if (optopt) fprintf(stderr, "optopt: %s ", optopt);
+				if (optopt) fprintf(stderr, "optopt: %d ", optopt);
 				if (optarg) fprintf(stderr, "optarg: %s ", optarg);
 				fprintf(stderr, "\n");
 				break;
@@ -153,26 +153,26 @@ int main(int argc, char *argv[])
 			exit(EXIT_FAILURE);
 		}
 	
-
-		fread(&sg.head, sizeof (struct savegame::head), 1, fp);
-		fread(&sg.player, sizeof (struct savegame::player), 4, fp);
-		fread(&sg.other, sizeof (struct savegame::other), 1, fp);
+		size_t res = 0;
+		res = fread(&sg.head, sizeof (struct savegame::head), 1, fp);
+		res = fread(&sg.player, sizeof (struct savegame::player), 4, fp);
+		res = fread(&sg.other, sizeof (struct savegame::other), 1, fp);
 
 		sg.colony = (struct savegame::colony *) malloc(sizeof (struct savegame::colony) * sg.head.colony_count);
-		fread(sg.colony, sizeof (struct savegame::colony), sg.head.colony_count, fp);
+		res = fread(sg.colony, sizeof (struct savegame::colony), sg.head.colony_count, fp);
 	
 		sg.unit   = (struct savegame::unit *)   malloc(sizeof (struct savegame::unit)   * sg.head.unit_count);
-		fread(sg.unit, sizeof (struct savegame::unit), sg.head.unit_count, fp);
+		res = fread(sg.unit, sizeof (struct savegame::unit), sg.head.unit_count, fp);
 	
-		fread(sg.nation, sizeof (struct savegame::nation), 4, fp);
+		res = fread(sg.nation, sizeof (struct savegame::nation), 4, fp);
 	
 		sg.tribe  = (struct savegame::tribe *)  malloc(sizeof (struct savegame::tribe)  * sg.head.tribe_count);
-		fread(sg.tribe, sizeof (struct savegame::tribe), sg.head.tribe_count, fp);
+		res = fread(sg.tribe, sizeof (struct savegame::tribe), sg.head.tribe_count, fp);
 	
-		fread(&sg.indian_relations, sizeof (struct savegame::indian_relations), 8, fp);
-		fread(&sg.stuff, sizeof (struct savegame::stuff), 1, fp);
-		fread(&sg.map, sizeof (struct savegame::map), 1, fp);
-		fread(&sg.tail, sizeof (struct savegame::tail), 1, fp);
+		res = fread(&sg.indian_relations, sizeof (struct savegame::indian_relations), 8, fp);
+		res = fread(&sg.stuff, sizeof (struct savegame::stuff), 1, fp);
+		res = fread(&sg.map, sizeof (struct savegame::map), 1, fp);
+		res = fread(&sg.tail, sizeof (struct savegame::tail), 1, fp);
 	
 		fclose(fp);
 	
@@ -899,8 +899,8 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 		printf("Gold: %5d, Crosses: %4d\n",
 			nation[i].gold, nation[i].crosses);
 
-		for (int j = 0; j < sizeof (nation[i].unk6); ++j)
-			printf("%d\n", nation[i].unk6[j]);
+		for (int j = 0; j < 4; ++j)
+			printf("%d ", nation[i].unk6[j] );
 		printf("\n");
 
 		for (int j = 0; j < 8; ++j) {
