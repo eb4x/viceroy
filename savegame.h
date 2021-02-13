@@ -320,8 +320,10 @@ struct savegame {
 		uint8_t cargo_hold[6];
 		uint8_t turns_worked;
 		uint8_t profession;
-		int16_t val1;
-		int16_t val2; // index to unit being transported? (treasure)
+		struct transport_chain {
+			int16_t next_unit_idx;
+			int16_t prev_unit_idx; // index to unit being transported? (treasure)
+		} __attribute__ ((packed)) transport_chain;
 	} __attribute__ ((packed)) *unit;
 
 	struct nation {

@@ -836,8 +836,8 @@ void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count, in
 			printf("%02x ", unit[i].unk08[j]);
 
 		printf("%3d %3d\n",
-			unit[i].val1,
-			unit[i].val2);
+			unit[i].transport_chain.next_unit_idx,
+			unit[i].transport_chain.prev_unit_idx);
 
 		if (just_this_one != -1)
 			break;
