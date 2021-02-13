@@ -220,6 +220,8 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			sg.nation[player_nation].gold = 4000000;
+
 			for (int i = 0; i < sg.head.colony_count; ++i) {
 				if (sg.colony[i].nation == player_nation) {
 
@@ -276,8 +278,6 @@ int main(int argc, char *argv[])
 
 	
 			FILE *fop = fopen("COLONY10.SAV", "w");
-			sg.head.map_size_x = 72;
-			sg.head.map_size_y = 58;
 			fwrite(&sg.head, sizeof (struct savegame::head), 1, fop);
 			fwrite(&sg.player, sizeof (struct savegame::player), 4, fop);
 			fwrite(&sg.other, sizeof (struct savegame::other), 1, fop);
@@ -539,7 +539,7 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 		printf("Colonists;\n");
 		for (int j = 0; j < colony[i].population; ++j)
 			printf("[%2d]  %s working as %s\n",
-				j, profession_list[ colony[i].profession[j]  ] ,
+				j, profession_list[ colony[i].profession[j] ] ,
 				   profession_list[ colony[i].occupation[j] ] );
 		printf("\n");
 
@@ -548,9 +548,9 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 		printf("\n\n");
 
 		printf("%2d | %2d | %2d\n", colony[i].tiles[4], colony[i].tiles[0], colony[i].tiles[5]);
-                printf("-------------\n");
+		printf("-------------\n");
 		printf("%2d |    | %2d\n",  colony[i].tiles[3],                     colony[i].tiles[1]);
-                printf("-------------\n");
+		printf("-------------\n");
 		printf("%2d | %2d | %2d\n", colony[i].tiles[7], colony[i].tiles[2], colony[i].tiles[6]);
 		printf("\n");
 
@@ -930,9 +930,9 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 
 		for (int j = 0; j < 16; ++j) {
 			printf("%11s: %7s, ", cargo_list[j], nation[i].boycott_bitmap & (1 << j) ? "boycott" : "");
-			printf("euro: %2d, %4d nr, %5d gold, %4d tons, %4d tons2\n",
+			printf("euro: %2d, %4d(%02x) nr, %5d gold, %4d tons, %4d tons2\n",
 				nation[i].trade.euro_price[j],
-				nation[i].trade.nr[j],
+				nation[i].trade.nr[j], nation[i].trade.nr[j],
 				nation[i].trade.gold[j],
 				nation[i].trade.tons[j],
 				nation[i].trade.tons2[j]);
