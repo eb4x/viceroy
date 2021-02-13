@@ -228,32 +228,32 @@ int main(int argc, char *argv[])
 							case 0:
 							case 1:
 							case 2:
-								sg.colony[i].colonists[j] = 0x11; // elder statesman
-								sg.colony[i].working_as[j] = 0x11;
+								sg.colony[i].profession[j] = 0x11; // elder statesman
+								sg.colony[i].occupation[j] = 0x11;
 								break;
 							case 3:
 							case 4:
-								sg.colony[i].colonists[j] = 0x0d; // carpenter
-								sg.colony[i].working_as[j] = 0x0d;
+								sg.colony[i].profession[j] = 0x0d; // carpenter
+								sg.colony[i].occupation[j] = 0x0d;
 								break;
 							case 5:
 							case 6:
-								sg.colony[i].colonists[j] = 0x0e; // blacksmith
-								sg.colony[i].working_as[j] = 0x0e;
+								sg.colony[i].profession[j] = 0x0e; // blacksmith
+								sg.colony[i].occupation[j] = 0x0e;
 								break;
 							case 7:
-								sg.colony[i].colonists[j] = 0x05; // lumberjack
-								sg.colony[i].working_as[j] = 0x05;
+								sg.colony[i].profession[j] = 0x05; // lumberjack
+								sg.colony[i].occupation[j] = 0x05;
 								sg.colony[i].tiles[0] = j;
 								break;
 							case 8:
-								sg.colony[i].colonists[j] = 0x08; // fisherman
-								sg.colony[i].working_as[j] = 0x08;
+								sg.colony[i].profession[j] = 0x08; // fisherman
+								sg.colony[i].occupation[j] = 0x08;
 								sg.colony[i].tiles[1] = j;
 								break;
 							case 9:
-								sg.colony[i].colonists[j] = 0x06; // oreminer
-								sg.colony[i].working_as[j] = 0x06;
+								sg.colony[i].profession[j] = 0x06; // oreminer
+								sg.colony[i].occupation[j] = 0x06;
 								sg.colony[i].tiles[4] = j;
 								break;
 
@@ -539,8 +539,8 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 		printf("Colonists;\n");
 		for (int j = 0; j < colony[i].population; ++j)
 			printf("[%2d]  %s working as %s\n",
-				j, profession_list[ colony[i].colonists[j]  ] ,
-				   profession_list[ colony[i].working_as[j] ] );
+				j, profession_list[ colony[i].profession[j]  ] ,
+				   profession_list[ colony[i].occupation[j] ] );
 		printf("\n");
 
 		for (int j = 0; j < sizeof (colony[i].unk6); ++j)

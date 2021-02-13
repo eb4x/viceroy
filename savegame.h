@@ -258,8 +258,8 @@ struct savegame {
 		uint8_t nation;
 		uint8_t unk0[ 4];
 		uint8_t population;
-		uint8_t working_as[32];
-		uint8_t colonists[32]; //represents profession.
+		uint8_t occupation[32];
+		uint8_t profession[32];
 		uint8_t unk6[16];
 
 		int8_t tiles[ 8]; //represents tiles around the colony. idx to citizen.
