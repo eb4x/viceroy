@@ -688,10 +688,23 @@ void print_colony(const struct savegame::colony *colony, uint16_t colony_count, 
 
 			assert(colony[i].buildings.unused == 0);
 
-		printf("\n");
-
-		for (int j = 0; j < sizeof (colony[i].unk9); ++j)
-			printf("%02x ", colony[i].unk9[j]);
+		printf("Custom house:\n");
+		printf("  %c food       \n", colony[i].custom_house.food        ? '*' : ' ');
+		printf("  %c sugar      \n", colony[i].custom_house.sugar       ? '*' : ' ');
+		printf("  %c tobacco    \n", colony[i].custom_house.tobacco     ? '*' : ' ');
+		printf("  %c cotton     \n", colony[i].custom_house.cotton      ? '*' : ' ');
+		printf("  %c furs       \n", colony[i].custom_house.furs        ? '*' : ' ');
+		printf("  %c lumber     \n", colony[i].custom_house.lumber      ? '*' : ' ');
+		printf("  %c ore        \n", colony[i].custom_house.ore         ? '*' : ' ');
+		printf("  %c silver     \n", colony[i].custom_house.silver      ? '*' : ' ');
+		printf("  %c horses     \n", colony[i].custom_house.horses      ? '*' : ' ');
+		printf("  %c rum        \n", colony[i].custom_house.rum         ? '*' : ' ');
+		printf("  %c cigars     \n", colony[i].custom_house.cigars      ? '*' : ' ');
+		printf("  %c cloth      \n", colony[i].custom_house.cloth       ? '*' : ' ');
+		printf("  %c coats      \n", colony[i].custom_house.coats       ? '*' : ' ');
+		printf("  %c trade_goods\n", colony[i].custom_house.trade_goods ? '*' : ' ');
+		printf("  %c tools      \n", colony[i].custom_house.tools       ? '*' : ' ');
+		printf("  %c muskets    \n", colony[i].custom_house.muskets     ? '*' : ' ');
 		printf("\n");
 
 		for (int j = 0; j < sizeof (colony[i].unka); ++j)

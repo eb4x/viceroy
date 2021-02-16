@@ -265,6 +265,7 @@ struct savegame {
 		int8_t tiles[ 8]; //represents tiles around the colony. idx to citizen.
 
 		uint8_t unk8[12];
+
 		struct buildings {
 			uint32_t stockade : 3;
 			uint32_t armory : 3;
@@ -287,8 +288,26 @@ struct savegame {
 			uint16_t unused : 6;
 		} __attribute__ ((packed)) buildings;
 
-		uint8_t unka[2]; // customs house bits?
-		uint8_t unk9[6];
+		struct custom_house {
+			uint16_t food : 1;
+			uint16_t sugar : 1;
+			uint16_t tobacco : 1;
+			uint16_t cotton : 1;
+			uint16_t furs : 1;
+			uint16_t lumber : 1;
+			uint16_t ore : 1;
+			uint16_t silver : 1;
+			uint16_t horses : 1;
+			uint16_t rum : 1;
+			uint16_t cigars : 1;
+			uint16_t cloth : 1;
+			uint16_t coats : 1;
+			uint16_t trade_goods : 1;
+			uint16_t tools : 1;
+			uint16_t muskets : 1;
+		} __attribute__ ((packed)) custom_house;
+
+		uint8_t unka[6];
 		uint16_t hammers;
 		uint8_t building_in_production;
 		uint8_t unkb[ 5];
