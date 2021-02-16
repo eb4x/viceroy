@@ -414,7 +414,11 @@ struct savegame {
 	} __attribute__ ((packed)) indian_relations[8];
 
 	struct stuff {
-		uint8_t unk_big[717];
+		uint8_t unk15[15];
+		uint16_t counter_decreasing_on_new_colony;
+		uint16_t unk_short;
+		uint16_t counter_increasing_on_new_colony;
+		uint8_t unk_big[696];
 		uint16_t x;
 		uint16_t y;
 		uint8_t zoom_level;

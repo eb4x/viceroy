@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
 	assert(sizeof (struct savegame::unit)   ==  28);
 	assert(sizeof (struct savegame::nation) == 316);
 	assert(sizeof (struct savegame::tribe)  ==  18);
+	assert(sizeof (struct savegame::stuff)  == 727);
 	assert(sizeof (struct savegame::map) == 58*72*4);
 
 	int c, optindex = 0;
@@ -1046,6 +1047,15 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 void print_stuff(const struct savegame::stuff *stuff)
 {
 	printf("-- stuff --\n");
+
+	for (int i = 0; i < sizeof (stuff->unk15); ++i) {
+		printf("%02x ", stuff->unk15[i]);
+	}
+	printf("\n");
+
+	printf("decreasing_counter: %d\n", stuff->counter_decreasing_on_new_colony);
+	printf("unk_short: %d\n", stuff->unk_short);
+	printf("increasing_counter: %d\n", stuff->counter_increasing_on_new_colony);
 
 	for (int i = 0; i < sizeof (stuff->unk_big); ++i) {
 		if (i % 78 == 0)
