@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	assert(sizeof (struct savegame::nation) == 316);
 	assert(sizeof (struct savegame::tribe)  ==  18);
 	assert(sizeof (struct savegame::stuff)  == 727);
-	assert(sizeof (struct savegame::map) == 58*72*4);
+	assert(sizeof (struct savegame::map)    == 58*72*4);
 
 	int c, optindex = 0;
 
@@ -396,25 +396,16 @@ void print_head(  const struct savegame::head   *head)
 
 	assert(head->tut2.nr2 == 0); // I don't think this is used
 
-	for (int i = 0; i < sizeof (head->unk2); ++i)
-		printf("%02x ", head->unk2[i]);
-	printf("\n");
+	printf("numbers00: %3d(%04x)\n", head->numbers00, head->numbers00);
+	printf("numbers01: %3d(%04x)\n", head->numbers01, head->numbers01);
 
-	for (int i = 0; i < sizeof (head->unk3); ++i)
-		printf("%02x ", head->unk3[i]);
-	printf("\n");
+	for (int i = 0; i < 3; ++i)
+		printf("numbers02.%d: %3d(%04x)\n", i, head->numbers02[i], head->numbers02[i]);
 
+	for (int i = 0; i < 3; ++i)
+		printf("numbers03.%d: %3d(%04x)\n", i, head->numbers03[i], head->numbers03[i]);
 
-	for (int i = 0; i < sizeof (head->unk3a); ++i)
-		printf("%02x ", head->unk3a[i]);
-	printf("\n");
-
-	for (int i = 0; i < sizeof (head->unk4); ++i)
-		printf("%02x ", head->unk4[i]);
-	printf("\n");
-
-	for (int i = 0; i < sizeof (head->unk5); ++i)
-		printf("%02x ", head->unk5[i]);
+	printf("numbers04: %3d(%04x)\n", head->numbers04, head->numbers04);
 	printf("\n");
 
 	printf("Founding fathers:\n");
@@ -431,20 +422,16 @@ void print_head(  const struct savegame::head   *head)
 	}
 	printf("\n");
 
-	for (int i = 0; i < sizeof (head->unk6); ++i)
-		printf("%02x ", head->unk6[i]);
+	for (int i = 0; i < 3; ++i)
+		printf("numbers05.%d: %3d(%04x)\n", i, head->numbers05[i], head->numbers05[i]);
 	printf("\n");
 
 	for (int i = 0; i < 4; ++i)
 		printf("National relation: %3d %s\n", head->nation_relation[i], nation_list[i]);
 	printf("\n");
 
-	for (int i = 0; i < sizeof (head->unk8); ++i)
-		printf("%02x ", head->unk8[i]);
-	printf("\n");
-
-	for (int i = 0; i < sizeof (head->unk9); ++i)
-		printf("%02x ", head->unk9[i]);
+	for (int i = 0; i < 5; ++i)
+		printf("numbers06.%d: %3d(%04x)\n", i, head->numbers06[i], head->numbers06[i]);
 	printf("\n");
 
 	for (int i = 0; i < 4; ++i) {
@@ -456,8 +443,8 @@ void print_head(  const struct savegame::head   *head)
 		}
 	}
 
-	for (int i = 0; i < sizeof (head->unka); ++i)
-		printf("%02x ", head->unka[i]);
+	for (int i = 0; i < 4; ++i)
+		printf("numbers07.%d: %3d(%04x)\n", i, head->numbers07[i], head->numbers07[i]);
 	printf("\n");
 
 	for (int i = 0; i < 16; ++i)

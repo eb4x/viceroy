@@ -197,26 +197,25 @@ struct savegame {
 			uint8_t nr12  : 1;
 		} __attribute__ ((packed)) tut3;
 
-		uint8_t  unk2[2];
+		int16_t numbers00;
 		uint16_t year;
 		uint16_t autumn; //boolean, true if autumn
 		uint16_t turn;
-		uint8_t  unk3[2];
+		int16_t numbers01;
 		uint16_t active_unit;
-		uint8_t  unk3a[6];
+		int16_t numbers02[3];
 		uint16_t tribe_count;
 		uint16_t unit_count;
 		uint16_t colony_count;
-		uint8_t  unk4[6];
+		int16_t numbers03[3];
 		uint8_t difficulty; enum { DISCOVERER = 0, EXPLORER = 1, CONQUISTADOR = 2, GOVERNOR = 3, VICEROY = 4 }; //36
-		uint8_t  unk5[ 2];
+		int16_t  numbers04;
 		int8_t founding_father[25];
-		uint8_t unk6[6];
+		uint16_t numbers05[3];
 		int16_t nation_relation[4];
-		uint8_t  unk8[ 2];
-		uint8_t  unk9[ 8];
+		int16_t numbers06[ 5];
 		uint16_t expeditionary_force[4];
-		uint8_t  unka[ 8]; //backup force, once you produce enough bells.
+		uint16_t numbers07[ 4]; //backup force, once you produce enough bells.
 		uint16_t count_down[16];
 		struct event { //these are events that trigger the "woodframe"
 			uint16_t discovery_of_the_new_world     : 1;
