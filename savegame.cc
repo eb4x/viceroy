@@ -1040,9 +1040,9 @@ void print_stuff(const struct savegame::stuff *stuff)
 	printf("increasing_counter: %d\n", stuff->counter_increasing_on_new_colony);
 
 	for (int i = 0; i < sizeof (stuff->unk_big); ++i) {
-		if (i % 78 == 0)
-			printf("\n[0x%03x] ", i);
-		printf("%02x ", stuff->unk_big[i]);
+		if (i % 16 == 0)
+			printf("\n[0x%03x]", i);
+		printf(" %02x", stuff->unk_big[i]);
 	}
 	printf("\n");
 
