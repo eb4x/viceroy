@@ -410,13 +410,15 @@ struct savegame {
 		uint8_t unk0;
 		uint8_t unk1;
 		uint8_t level;
-		uint8_t unk2[55];
+		uint8_t unk2[5];
+		uint8_t horse_herds;
+		uint8_t unk3[49];
 
 		struct meeting {
 			uint8_t met;
 		} __attribute__ ((packed)) meeting[4];
 
-		uint8_t unk3[8];
+		uint8_t unk4[8];
 
 		struct aggr {
 			uint8_t aggr;

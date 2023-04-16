@@ -990,10 +990,16 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 		printf("%-8s:", nation_list[INDIAN_OFFSET + i]);
 
 		printf(" %02x %02x", ir[i].unk0, ir[i].unk1);
-
 		printf(" %-12s", indian_level[ ir[i].level ]);
+
 		for (int j = 0; j < sizeof (ir[i].unk2); ++j) {
 			printf(" %02x", ir[i].unk2[j]);
+		}
+
+		printf(" %2d horse_herds", ir[i].horse_herds);
+
+		for (int j = 0; j < sizeof (ir[i].unk3); ++j) {
+			printf(" %02x", ir[i].unk3[j]);
 		}
 
 		for (int j = 0; j < 4; ++j) {
@@ -1006,8 +1012,8 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 			}
 		}
 
-		for (int j = 0; j < sizeof (ir[i].unk3); ++j) {
-			printf(" %02x", ir[i].unk3[j]);
+		for (int j = 0; j < sizeof (ir[i].unk4); ++j) {
+			printf(" %02x", ir[i].unk4[j]);
 		}
 
 		for (int j = 0; j < 4; ++j) {
