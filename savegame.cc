@@ -288,8 +288,6 @@ int main(int argc, char *argv[])
 				sg.colony[i].buildings.stockade = 0;
 			}
 
-
-	
 			FILE *fop = fopen("COLONY10.SAV", "w");
 			fwrite(&sg.head, sizeof (struct savegame::head), 1, fop);
 			fwrite(&sg.player, sizeof (struct savegame::player), 4, fop);
@@ -991,30 +989,33 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 	for (int i = 0; i < 8; ++i) {
 		printf("%-8s:", nation_list[INDIAN_OFFSET + i]);
 
-		for (int j = 0; j < sizeof (ir[i].unk0); ++j) {
-			printf("%02x ", ir[i].unk0[j]);
+		printf(" %02x %02x", ir[i].unk0, ir[i].unk1);
+
+		printf(" %-12s", indian_level[ ir[i].level ]);
+		for (int j = 0; j < sizeof (ir[i].unk2); ++j) {
+			printf(" %02x", ir[i].unk2[j]);
 		}
 
 		for (int j = 0; j < 4; ++j) {
 			switch (j) {
-				case 0: printf("eng_met(%02x) ", ir[i].meeting[j].met); break;
-				case 1: printf("fra_met(%02x) ", ir[i].meeting[j].met); break;
-				case 2: printf("spa_met(%02x) ", ir[i].meeting[j].met); break;
-				case 3: printf("dut_met(%02x) ", ir[i].meeting[j].met); break;
+				case 0: printf(" eng_met(%02x)", ir[i].meeting[j].met); break;
+				case 1: printf(" fra_met(%02x)", ir[i].meeting[j].met); break;
+				case 2: printf(" spa_met(%02x)", ir[i].meeting[j].met); break;
+				case 3: printf(" dut_met(%02x)", ir[i].meeting[j].met); break;
 				default: printf("ERROR"); break;
 			}
 		}
 
-		for (int j = 0; j < sizeof (ir[i].unk1); ++j) {
-			printf("%02x ", ir[i].unk1[j]);
+		for (int j = 0; j < sizeof (ir[i].unk3); ++j) {
+			printf(" %02x", ir[i].unk3[j]);
 		}
 
 		for (int j = 0; j < 4; ++j) {
 			switch (j) {
-				case 0: printf("eng_aggr(%3d) ", ir[i].aggr[j].aggr); break;
-				case 1: printf("fra_aggr(%3d) ", ir[i].aggr[j].aggr); break;
-				case 2: printf("spa_aggr(%3d) ", ir[i].aggr[j].aggr); break;
-				case 3: printf("dut_aggr(%3d) ", ir[i].aggr[j].aggr); break;
+				case 0: printf(" eng_aggr(%3d)", ir[i].aggr[j].aggr); break;
+				case 1: printf(" fra_aggr(%3d)", ir[i].aggr[j].aggr); break;
+				case 2: printf(" spa_aggr(%3d)", ir[i].aggr[j].aggr); break;
+				case 3: printf(" dut_aggr(%3d)", ir[i].aggr[j].aggr); break;
 				default: printf("ERROR"); break;
 			}
 			assert(ir[i].aggr[j].aggr_high == 0);

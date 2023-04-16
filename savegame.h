@@ -74,6 +74,13 @@ static const char *nation_list[] = {
 	/* 11 */ "Tupi",
 };
 
+static const char *indian_level[] = {
+	/*  0 */ "Semi-Nomadic",
+	/*  1 */ "Agrarian",
+	/*  2 */ "Advanced",
+	/*  3 */ "Civilized",
+};
+
 static const char *cargo_list[] = {
 	"Food",
 	"Sugar",
@@ -400,13 +407,16 @@ struct savegame {
 	} __attribute__ ((packed)) *tribe;
 
 	struct indian_relations {
-		uint8_t unk0[58];
+		uint8_t unk0;
+		uint8_t unk1;
+		uint8_t level;
+		uint8_t unk2[55];
 
 		struct meeting {
 			uint8_t met;
 		} __attribute__ ((packed)) meeting[4];
 
-		uint8_t unk1[8];
+		uint8_t unk3[8];
 
 		struct aggr {
 			uint8_t aggr;
