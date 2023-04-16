@@ -19,6 +19,7 @@ void print_indian(const struct savegame::indian_relations *ir,                  
 void print_stuff( const struct savegame::stuff  *stuff);
 void print_map(   const struct savegame::map    *map);
 void print_tail(  const struct savegame::tail   *tail);
+void print_route(const struct savegame *sg, const struct savegame::trade_route *route, int just_this_one = -1);
 
 void dump(void *address, size_t bytes, const char *filename);
 
@@ -39,6 +40,7 @@ void print_help(const char *prog){
 	fprintf(stderr, "-nN, --nation=N  displays nation section of savegame \n");
 	fprintf(stderr, "-tN, --tribe=N   displays tribe section of savegame  \n");
 	fprintf(stderr, "-iN, --indian=N  displays indian section of savegame \n");
+	fprintf(stderr, "-rN, --route=N   displays trade route section        \n");
 	fprintf(stderr, "                                                     \n");
 	fprintf(stderr, "--colony10  writes modificaions to COLONY10.SAV      \n");
 }
@@ -53,6 +55,7 @@ int main(int argc, char *argv[])
 	assert(sizeof (struct savegame::tribe)  ==  18);
 	assert(sizeof (struct savegame::stuff)  == 727);
 	assert(sizeof (struct savegame::map)    == 58*72*4);
+	assert(sizeof (struct savegame::trade_route) == 74);
 
 	int c, optindex = 0;
 
@@ -63,7 +66,7 @@ int main(int argc, char *argv[])
 	 */
 	int opt_head = 0, opt_player = 0, opt_other = 0, opt_colony = 0, opt_unit = 0,
 	    opt_nation = 0, opt_tribe = 0, opt_stuff = 0, opt_indian = 0, opt_map = 0,
-	    opt_tail = 0, opt_help = 0, opt_colony10 = 0;
+	    opt_tail = 0, opt_route = 0, opt_help = 0, opt_colony10 = 0;
 
 	static struct option long_options[] = {
 		{ "head",     no_argument,       NULL,          'H' },
@@ -77,12 +80,13 @@ int main(int argc, char *argv[])
 		{ "stuff",    no_argument,       NULL,          's' },
 		{ "map",      no_argument,       NULL,          'm' },
 		{ "tail",     no_argument,       NULL,          'T' },
+		{ "route",    optional_argument, NULL,          'r' },
 		{ "colony10", no_argument,       &opt_colony10, -1  },
 		{ "help",     no_argument,       NULL,          'h' },
 		{ NULL,       no_argument, NULL,  0  }
 	};
 
-	while ((c = getopt_long(argc, argv, ":Hp::oc::u::n::t::i::smTh", long_options, &optindex)) != -1) {
+	while ((c = getopt_long(argc, argv, ":Hp::oc::u::n::t::i::r::smTh", long_options, &optindex)) != -1) {
 		switch (c) {
 
 			case 0:
@@ -119,6 +123,10 @@ int main(int argc, char *argv[])
 			case 'i': opt_indian = -1;
 				if (optarg && isdigit(optarg[0]) )
 					opt_indian = atoi(optarg) + 1;
+				break;
+			case 'r': opt_route = -1;
+				if (optarg && isdigit(optarg[0]) )
+					opt_route = atoi(optarg) + 1;
 				break;
 			case 's': opt_stuff  = -1; break;
 			case 'm': opt_map    = -1; break;
@@ -174,6 +182,7 @@ int main(int argc, char *argv[])
 		res = fread(&sg.stuff, sizeof (struct savegame::stuff), 1, fp);
 		res = fread(&sg.map, sizeof (struct savegame::map), 1, fp);
 		res = fread(&sg.tail, sizeof (struct savegame::tail), 1, fp);
+		res = fread(&sg.trade_route, sizeof (struct savegame::trade_route), 12, fp);
 	
 		fclose(fp);
 	
@@ -210,6 +219,9 @@ int main(int argc, char *argv[])
 		if (opt_tail)
 			print_tail(&(sg.tail));
 	
+		if (opt_route)
+			print_route(&sg, sg.trade_route, (opt_route == -1) ? opt_route : opt_route - 1);
+
 		if (opt_colony10) {
 
 			/* Find our player */
@@ -315,13 +327,14 @@ void print_head(  const struct savegame::head   *head)
 	printf("Difficulty: %s\n",
 		difficulty_list[head->difficulty]);
 
-	printf("%s %4d, Turn: %2d, Tribes: %d, Units: %d, Colonies: %d\n",
+	printf("%s %4d, Turn: %2d, Tribes: %d, Units: %d, Colonies: %d, Trade Routes: %d\n",
 		head->autumn ? "Autumn" : "Spring",
 		head->year,
 		head->turn,
 		head->tribe_count,
 		head->unit_count,
-		head->colony_count);
+		head->colony_count,
+		head->trade_route_count);
 
 //	printf("Active unit: "); print_unit(sg.unit, sg.head.unit_count, head->active_unit);
 
@@ -402,7 +415,7 @@ void print_head(  const struct savegame::head   *head)
 	for (int i = 0; i < 3; ++i)
 		printf("numbers02.%d: %3d(%04x)\n", i, head->numbers02[i], head->numbers02[i]);
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 2; ++i)
 		printf("numbers03.%d: %3d(%04x)\n", i, head->numbers03[i], head->numbers03[i]);
 
 	printf("numbers04: %3d(%04x)\n", head->numbers04, head->numbers04);
@@ -1093,6 +1106,62 @@ void print_tail(const struct savegame::tail *tail)
 		if (i % 20 == 0)
 			printf("\n");
 		printf("%02x ", tail->unk[i]);
+	}
+	printf("\n");
+}
+
+void print_route(const struct savegame *sg, const struct savegame::trade_route *route, int just_this_one)
+{
+	printf("-- trade routes --\n");
+
+	int start = (just_this_one == -1) ? 0 : just_this_one;
+
+	for (int i = start; i < sg->head.trade_route_count; ++i) {
+		printf("%-31s, type: %4s, entries: %d\n",
+			route[i].name, route[i].type ? "sea" : "land",
+			route[i].entries);
+
+		for (int j = 0; j < route[i].entries; ++j) {
+			printf("%d. %-24s",
+				j, sg->colony[ route[i].entry[j].destination ].name);
+
+			/* stupid string concatenation "trick" */
+			printf(" | unloading: %d, [%s%s%s%s%s%s%s%s%s%s%s]",
+				route[i].entry[j].unloading_size,
+				(route[i].entry[j].unloading_size > 0) ? cargo_list[ route[i].entry[j].cargo[1].item_0 ] : "",
+				(route[i].entry[j].unloading_size > 1) ? ", " : "",
+				(route[i].entry[j].unloading_size > 1) ? cargo_list[ route[i].entry[j].cargo[1].item_1 ] : "",
+				(route[i].entry[j].unloading_size > 2) ? ", " : "",
+				(route[i].entry[j].unloading_size > 2) ? cargo_list[ route[i].entry[j].cargo[1].item_2 ] : "",
+				(route[i].entry[j].unloading_size > 3) ? ", " : "",
+				(route[i].entry[j].unloading_size > 3) ? cargo_list[ route[i].entry[j].cargo[1].item_3 ] : "",
+				(route[i].entry[j].unloading_size > 4) ? ", " : "",
+				(route[i].entry[j].unloading_size > 4) ? cargo_list[ route[i].entry[j].cargo[1].item_4 ] : "",
+				(route[i].entry[j].unloading_size > 5) ? ", " : "",
+				(route[i].entry[j].unloading_size > 5) ? cargo_list[ route[i].entry[j].cargo[1].item_5 ] : "");
+
+			printf(" | loading: %d, [%s%s%s%s%s%s%s%s%s%s%s]",
+				route[i].entry[j].loading_size,
+				(route[i].entry[j].loading_size > 0) ? cargo_list[ route[i].entry[j].cargo[0].item_0 ] : "",
+				(route[i].entry[j].loading_size > 1) ? ", " : "",
+				(route[i].entry[j].loading_size > 1) ? cargo_list[ route[i].entry[j].cargo[0].item_1 ] : "",
+				(route[i].entry[j].loading_size > 2) ? ", " : "",
+				(route[i].entry[j].loading_size > 2) ? cargo_list[ route[i].entry[j].cargo[0].item_2 ] : "",
+				(route[i].entry[j].loading_size > 3) ? ", " : "",
+				(route[i].entry[j].loading_size > 3) ? cargo_list[ route[i].entry[j].cargo[0].item_3 ] : "",
+				(route[i].entry[j].loading_size > 4) ? ", " : "",
+				(route[i].entry[j].loading_size > 4) ? cargo_list[ route[i].entry[j].cargo[0].item_4 ] : "",
+				(route[i].entry[j].loading_size > 5) ? ", " : "",
+				(route[i].entry[j].loading_size > 5) ? cargo_list[ route[i].entry[j].cargo[0].item_5 ] : "");
+			printf("\n");
+
+			/* If this doesn't go unused, I'd like to know about it. */
+			assert(route[i].entry[j].padding == 0);
+		}
+		printf("\n");
+
+		if (just_this_one != -1)
+			break;
 	}
 	printf("\n");
 }

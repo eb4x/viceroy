@@ -207,7 +207,8 @@ struct savegame {
 		uint16_t tribe_count;
 		uint16_t unit_count;
 		uint16_t colony_count;
-		int16_t numbers03[3];
+		uint16_t trade_route_count;
+		int16_t numbers03[2];
 		uint8_t difficulty; enum { DISCOVERER = 0, EXPLORER = 1, CONQUISTADOR = 2, GOVERNOR = 3, VICEROY = 4 }; //36
 		int16_t  numbers04;
 		int8_t founding_father[25];
@@ -440,6 +441,26 @@ struct savegame {
 	} __attribute__ ((packed)) map;
 
 	struct tail {
-		uint8_t unk[1502];
+		uint8_t unk[614];
 	} __attribute__ ((packed)) tail;
+
+	struct trade_route {
+		char name[32];
+		uint8_t type;
+		uint8_t entries;
+		struct entry {
+			uint16_t destination;
+			uint8_t unloading_size: 4;
+			uint8_t loading_size : 4;
+			struct {
+				uint8_t item_0 : 4;
+				uint8_t item_1 : 4;
+				uint8_t item_2 : 4;
+				uint8_t item_3 : 4;
+				uint8_t item_4 : 4;
+				uint8_t item_5 : 4;
+			} __attribute__ ((packed)) cargo[2]; // 0 for loading, 1 for unloading
+			uint8_t padding;
+		} __attribute__ ((packed)) entry[4];
+	} __attribute__ ((packed)) trade_route[12];
 } __attribute__ ((packed));
