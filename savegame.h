@@ -58,6 +58,7 @@ static const char *profession_list[] = {
 	/* 28 */ "Free colonist ???",
 };
 
+#define INDIAN_OFFSET 4
 static const char *nation_list[] = {
 	/*  0 */ "England",
 	/*  1 */ "France",
@@ -66,7 +67,7 @@ static const char *nation_list[] = {
 	/*  4 */ "Inca",
 	/*  5 */ "Aztec",
 	/*  6 */ "Awarak",
-	/*  7 */ "Iroqui",
+	/*  7 */ "Iroquoi",
 	/*  8 */ "Cherokee",
 	/*  9 */ "Apache",
 	/* 10 */ "Sioux",

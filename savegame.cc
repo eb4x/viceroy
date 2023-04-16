@@ -918,17 +918,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 		printf("\n");
 
 		for (int j = 0; j < 8; ++j) {
-			printf("Indian status - ");
-			switch (j) {
-				case 0: printf("Inca    :"); break;
-				case 1: printf("Aztec   :"); break;
-				case 2: printf("Awarak  :"); break;
-				case 3: printf("Iroquoi :"); break;
-				case 4: printf("Cherokee:"); break;
-				case 5: printf("Apache  :"); break;
-				case 6: printf("Sioux   :"); break;
-				case 7: printf("Tupi    :"); break;
-			}
+			printf("Indian status - %-8s:", nation_list[INDIAN_OFFSET + j]);
 			switch (nation[i].indian_relation[j]) {
 				case savegame::nation::WAR:     printf("war\n");     break;
 				case savegame::nation::PEACE:   printf("peace\n");   break;
@@ -998,16 +988,7 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = 0; i < 8; ++i) {
-		switch (i) {
-			case 0: printf("Inca    :"); break;
-			case 1: printf("Aztec   :"); break;
-			case 2: printf("Awarak  :"); break;
-			case 3: printf("Iroquoi :"); break;
-			case 4: printf("Cherokee:"); break;
-			case 5: printf("Apache  :"); break;
-			case 6: printf("Sioux   :"); break;
-			case 7: printf("Tupi    :"); break;
-		}
+		printf("%-8s:", nation_list[INDIAN_OFFSET + i]);
 
 		for (int j = 0; j < sizeof (ir[i].unk0); ++j) {
 			printf("%02x ", ir[i].unk0[j]);
