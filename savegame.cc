@@ -497,8 +497,9 @@ void print_player(const struct savegame::player *player, int just_this_one)
 	for (int i = start; i < 4; ++i) {
 		printf("%-11s: %23s / %23s : ", nation_list[i], player[i].name, player[i].country);
 		switch (player[i].control) {
-			case savegame::player::PLAYER: printf("Player "); break;
-			case savegame::player::AI:     printf("AI     "); break;
+			case savegame::player::PLAYER:    printf("Player    "); break;
+			case savegame::player::AI:        printf("AI        "); break;
+			case savegame::player::WITHDRAWN: printf("Withdrawn "); break;
 			default: printf("UNKNOWN (%02x)", player[i].control);
 		}
 		printf("diplomacy: %02x ", player[i].diplomacy);

@@ -244,7 +244,7 @@ struct savegame {
 		char name[24];
 		char country[24];
 		uint8_t unk00;
-		uint8_t control; enum { PLAYER = 0, AI = 1 };
+		uint8_t control; enum { PLAYER = 0, AI = 1, WITHDRAWN = 2 };
 		uint8_t founded_colonies; // founded colonies, probably used pick next colony name
 		uint8_t diplomacy;
 	} __attribute__ ((packed)) player[4];
