@@ -300,6 +300,7 @@ int main(int argc, char *argv[])
 			fwrite(&sg.stuff, sizeof (struct savegame::stuff), 1, fop);
 			fwrite(&sg.map, sizeof (struct savegame::map), 1, fop);
 			fwrite(&sg.tail, sizeof(struct savegame::tail), 1, fop);
+			fwrite(&sg.trade_route, sizeof(struct savegame::trade_route), 12, fop);
 			fclose(fop);
 		}
 
