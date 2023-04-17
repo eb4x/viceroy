@@ -11,7 +11,7 @@
 void print_head(  const struct savegame::head   *head);
 void print_player(const struct savegame::player *player,                        int just_this_one = -1);
 void print_other( const struct savegame::other  *other);
-void print_colony(const struct savegame::colony *colony, uint16_t colony_count, int just_this_one = -1);
+void print_colony(const struct savegame *sg, const struct savegame::colony *colony, uint16_t colony_count, int just_this_one = -1);
 void print_unit(  const struct savegame::unit   *unit,   uint16_t unit_count,   int just_this_one = -1);
 void print_nation(const struct savegame::nation *nation,                        int just_this_one = -1);
 void print_tribe( const struct savegame::tribe  *tribe,  uint16_t tribe_count,  int just_this_one = -1);
@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
 			print_other(&(sg.other));
 	
 		if (opt_colony)
-			print_colony(sg.colony, sg.head.colony_count, (opt_colony == -1) ? opt_colony : opt_colony - 1);
+			print_colony(&sg, sg.colony, sg.head.colony_count, (opt_colony == -1) ? opt_colony : opt_colony - 1);
 	
 		if (opt_unit)
 			print_unit(sg.unit, sg.head.unit_count, (opt_unit == -1) ? opt_unit : opt_unit - 1);
@@ -520,14 +520,22 @@ void print_other( const struct savegame::other  *other)
 	printf("\n\n");
 }
 
-void print_colony(const struct savegame::colony *colony, uint16_t colony_count, int just_this_one)
+void print_colony(const struct savegame *sg, const struct savegame::colony *colony, uint16_t colony_count, int just_this_one)
 {
 	printf("-- colonies --\n");
 
-	int start = (just_this_one == -1) ? 0 : just_this_one;
+	/* Find our player */
+	int player_nation = -1;
+	for (int i = 0; i < 4; ++i) {
+		if (sg->player[i].control == 0) {
+			player_nation = i;
+			break;
+		}
+	}
 
+	int start = (just_this_one == -1) ? 0 : just_this_one;
 	for (int i = start; i < colony_count; ++i) {
-		if ( colony[i].nation != 3) /* Skip all non-dutch */
+		if ( colony[i].nation != player_nation) /* Skip printing colonies not under player control */
 			continue;
 
 		printf("[%3d] (%3d, %3d): %2d %s\n", i, colony[i].x, colony[i].y, colony[i].population, colony[i].name);
