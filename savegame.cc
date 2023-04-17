@@ -966,17 +966,17 @@ void print_tribe(const struct savegame::tribe  *tribe,  uint16_t tribe_count, in
 	int start = (just_this_one == -1) ? 0 : just_this_one;
 
 	for (int i = start; i < tribe_count; ++i) {
-		printf("[%3d] (%3d, %3d): %2d %-11s : ", i, tribe[i].x, tribe[i].y, tribe[i].population, nation_list[tribe[i].nation]);
-		printf("state: artillery(%d) learned(%d) capital(%d) scouted(%d) %d %d %d %d, ",
+		printf("[%3d] (%3d, %3d): %2d %-11s :", i, tribe[i].x, tribe[i].y, tribe[i].population, nation_list[tribe[i].nation]);
+		printf(" state: artillery(%d) learned(%d) capital(%d) scouted(%d) %d %d %d %d,",
 			tribe[i].state.artillery, tribe[i].state.learned, tribe[i].state.capital, tribe[i].state.scouted,
 			tribe[i].state.unk5, tribe[i].state.unk6, tribe[i].state.unk7, tribe[i].state.unk8);
 
-		printf("mission(%2d) ", tribe[i].mission);
-
-		for (int j = 0; j < sizeof (tribe[i].unk1); ++j)
-			printf("%02x ", tribe[i].unk1[j]);
-
-		printf("panic(%2d) ", tribe[i].panic);
+		printf(" mission(%2d)", tribe[i].mission);
+		printf(" unk1: %02x", tribe[i].unk1);
+		printf(" f0: %d", tribe[i].flag_0);
+		printf(" cargo_bought: %s", (tribe[i].last_cargo_bought != -1) ? cargo_list[ tribe[i].last_cargo_bought ] : "-1");
+		printf(" cargo_sold: %s", (tribe[i].last_cargo_sold != -1) ? cargo_list[ tribe[i].last_cargo_sold ] : "-1");
+		printf(" panic(%2d) ", tribe[i].panic);
 
 		for (int j = 0; j < sizeof (tribe[i].unk2); ++j)
 			printf("%02x ", tribe[i].unk2[j]);
@@ -1005,10 +1005,15 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 			printf(" %02x", ir[i].unk2[j]);
 		}
 
+		printf(" %2d armed_braves?", ir[i].armed_braves);
 		printf(" %2d horse_herds", ir[i].horse_herds);
 
 		for (int j = 0; j < sizeof (ir[i].unk3); ++j) {
 			printf(" %02x", ir[i].unk3[j]);
+		}
+
+		for (int j = 0; j < sizeof (ir[i].unk4); ++j) {
+			printf(" %02x", ir[i].unk4[j]);
 		}
 
 		for (int j = 0; j < 4; ++j) {
@@ -1021,8 +1026,8 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 			}
 		}
 
-		for (int j = 0; j < sizeof (ir[i].unk4); ++j) {
-			printf(" %02x", ir[i].unk4[j]);
+		for (int j = 0; j < sizeof (ir[i].unk5); ++j) {
+			printf(" %02x", ir[i].unk5[j]);
 		}
 
 		for (int j = 0; j < 4; ++j) {
@@ -1035,6 +1040,11 @@ void print_indian(const struct savegame::indian_relations *ir, int just_this_one
 			}
 			assert(ir[i].aggr[j].aggr_high == 0);
 		}
+		printf("\n");
+
+		printf("Stock;\n");
+		for (int j = 0; j < 16; ++j)
+			printf("  %11s: %3d\n", cargo_list[j], ir[i].stock[j]);
 		printf("\n");
 
 		if (just_this_one != -1)

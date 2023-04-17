@@ -400,7 +400,10 @@ struct savegame {
 		} __attribute__ ((packed)) state;
 		uint8_t population;
 		int8_t mission; //ff if none, 0 1 2 3 = eng fra spa dut
-		uint8_t unk1[4];
+		uint8_t unk1;
+		int8_t flag_0;
+		int8_t last_cargo_bought;
+		int8_t last_cargo_sold;
 		uint8_t panic;
 		uint8_t unk2[6];
 		uint8_t population_loss_in_current_turn; //due to attacks
@@ -410,15 +413,18 @@ struct savegame {
 		uint8_t unk0;
 		uint8_t unk1;
 		uint8_t level;
-		uint8_t unk2[5];
+		uint8_t unk2[4];
+		uint8_t armed_braves; // if you sell 100 muskets, this increases by 2 (50 muskets per unit)
 		uint8_t horse_herds;
-		uint8_t unk3[49];
+		uint8_t unk3[5];
+		int16_t stock[16]; // trading with indians, they offer 25 of some item they don't actually have. So the game allows for negative numbers.
+		uint8_t unk4[12];
 
 		struct meeting {
 			uint8_t met;
 		} __attribute__ ((packed)) meeting[4];
 
-		uint8_t unk4[8];
+		uint8_t unk5[8];
 
 		struct aggr {
 			uint8_t aggr;
