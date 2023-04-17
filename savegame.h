@@ -319,7 +319,7 @@ struct savegame {
 		uint16_t hammers;
 		uint8_t building_in_production;
 		uint8_t unkb[ 5];
-		uint16_t stock[16];
+		int16_t stock[16];
 		uint8_t unkd[ 8];
 		uint32_t rebel_dividend;
 		uint32_t rebel_divisor;
