@@ -942,7 +942,7 @@ void print_nation(const struct savegame::nation *nation, int just_this_one)
 
 		for (int j = 0; j < 16; ++j) {
 			printf("%11s: %7s, ", cargo_list[j], nation[i].boycott_bitmap & (1 << j) ? "boycott" : "");
-			printf("euro: %2d, %4d(%02x) nr, %5d gold, %4d tons, %4d tons2\n",
+			printf("euro: %2d, %4d(%04x) nr, %5d gold, %4d tons, %4d tons2\n",
 				nation[i].trade.euro_price[j],
 				nation[i].trade.nr[j], nation[i].trade.nr[j],
 				nation[i].trade.gold[j],
