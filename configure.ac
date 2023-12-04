@@ -1,4 +1,4 @@
-AC_INIT([viceroy],0.1.0)
+AC_INIT([viceroy],[0.1.0])
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
@@ -8,4 +8,5 @@ AC_PROG_MAKE_SET
 
 AC_CONFIG_HEADERS([config.h])
 
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
