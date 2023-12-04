@@ -383,7 +383,6 @@ void print_head(  const struct savegame::head   *head)
 	printf("  %c Tutorial Hints\n",      head->game_options.tutorial_hints      ? '*' : ' ');
 
 	assert(head->game_options.unknown7 == 0);
-	assert(head->game_options.unknown == 0);
 
 	printf("HowToWin        : %5s\n", head->tut2.howtowin ? "true" : "false");
 

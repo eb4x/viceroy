@@ -164,7 +164,7 @@ struct savegame {
 			uint16_t autosave           : 1;
 			uint16_t end_of_turn        : 1;
 			uint16_t fast_piece_slide   : 1;
-			uint16_t unknown            : 1;
+			uint16_t cheat              : 1; // alt + 'w', 'i', 'n'
 			uint16_t show_foreign_moves : 1;
 			uint16_t show_indian_moves  : 1;
 		} __attribute__ ((packed)) game_options;
